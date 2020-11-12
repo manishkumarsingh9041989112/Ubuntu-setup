@@ -17,7 +17,7 @@ flatpak install flathub com.visualstudio.code -y
 #flatpak install flathub com.tux4kids.tuxtype -y
 #flatpak install flathub com.gitlab.tipp10.tipp10 -y
 #flatpak install flathub org.kde.ktouch -y
-flatpak install flathub com.calibre_ebook.calibre -y
+#flatpak install flathub com.calibre_ebook.calibre -y
 flatpak install flathub com.github.johnfactotum.Foliate -y
 flatpak install flathub org.kde.okular -y
 flatpak install flathub com.github.babluboy.bookworm -y

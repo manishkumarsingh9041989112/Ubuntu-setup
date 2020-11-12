@@ -24,6 +24,7 @@ set -e
 #11. Celluloid
 #12. Powerline fonts
 #13. Neovim
+#14. Calibre
 ## Script starts here
 
 # Checking if the user has run the script with "sudo" or not
@@ -170,6 +171,12 @@ function INSTALL_ALL_SOFTWARE {
 	echo 
 	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 	sudo apt install ./google-chrome-stable_current_amd64.deb -y
+	echo
+	echo "###########################################################"
+	echo "          Calibre Ebook manager installer         "
+	echo "###########################################################"
+	echo 
+	sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
 	echo
 	echo "#################################################################"
 	echo "         Adding Brave-browser,Vivaldi-browser"
