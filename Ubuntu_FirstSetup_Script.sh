@@ -184,7 +184,7 @@ function INSTALL_ALL_SOFTWARE {
 	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.3-1_amd64.deb
 	sudo apt install ./4kvideodownloader_4.13.3-1_amd64.deb -y
 	sudo apt update -y
-	sudo apt install nordvpn fonts-powerline virtualbox virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
+	sudo apt install acpi nordvpn fonts-powerline virtualbox virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
 	sudo apt install vivaldi-stable -y
 	sudo apt install brave-browser -y 
 	echo -e "\e[31;43m***** Installing pfetch*****\e[0m"
