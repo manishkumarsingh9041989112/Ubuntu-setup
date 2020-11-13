@@ -185,7 +185,7 @@ function INSTALL_ALL_SOFTWARE {
 	# Vivaldi Browser
 	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add -
 	sudo add-apt-repository 'deb https://repo.vivaldi.com/archive/deb/ stable main' -y
-	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.3-1_amd64.deb
+	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
 	sudo apt install ./4kvideodownloader_4.13.3-1_amd64.deb -y
 	sudo apt update -y
 	sudo apt install acpi nordvpn fonts-powerline virtualbox virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
