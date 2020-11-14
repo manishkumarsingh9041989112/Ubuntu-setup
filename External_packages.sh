@@ -11,8 +11,8 @@ flatpak install flathub com.github.micahflee.torbrowser-launcher -y
 flatpak install flathub io.github.celluloid_player.Celluloid -y
 flatpak install flathub com.bitwarden.desktop -y
 flatpak install flathub org.keepassxc.KeePassXC -y
-flatpak install flathub com.sublimetext.three -y
-flatpak install flathub com.visualstudio.code -y
+#flatpak install flathub com.sublimetext.three -y
+#flatpak install flathub com.visualstudio.code -y
 #flatpak install flathub net.sourceforge.Klavaro -y
 #flatpak install flathub com.tux4kids.tuxtype -y
 #flatpak install flathub com.gitlab.tipp10.tipp10 -y
