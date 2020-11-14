@@ -186,11 +186,29 @@ function INSTALL_ALL_SOFTWARE {
 	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add -
 	sudo add-apt-repository 'deb https://repo.vivaldi.com/archive/deb/ stable main' -y
 	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
-	sudo apt install ./4kvideodownloader_4.13.3-1_amd64.deb -y
+	chmod +x 4k*amd64.deb
+	sudo apt install ./4k*amd64.deb -y
+	echo
+	echo "#################################################################"
+	echo "         Adding Sublime text"
+	echo "#################################################################"
+	echo 
+	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+	echo
+	echo "#################################################################"
+	echo "         Adding VSCode"
+	echo "#################################################################"
+	echo 
+	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+	sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+	sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 	sudo apt update -y
-	sudo apt install acpi nordvpn fonts-powerline virtualbox virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
+	sudo apt install acpi nordvpn fonts-powerline virtualbox virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent 		redshift-gtk sublime-text code -y
 	sudo apt install vivaldi-stable -y
 	sudo apt install brave-browser -y 
+
+	
 	echo -e "\e[31;43m***** Installing pfetch*****\e[0m"
 	git clone https://github.com/dylanaraps/pfetch.git
 	sudo install pfetch/pfetch /usr/local/bin/
