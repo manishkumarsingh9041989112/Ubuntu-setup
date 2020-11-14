@@ -31,7 +31,7 @@ sudo snap install opera
 sudo snap refresh
 
 
-sudo apt autoclean -y && sudo apt autoremove -y && sudo shutdown -r 0
+sudo apt autoclean -y && sudo apt autoremove -y && sudo shutdown -r 5
 
 
 

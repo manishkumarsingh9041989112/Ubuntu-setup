@@ -130,7 +130,7 @@ function REBOOT_SYSTEM {
 	echo "#########################"
 	echo "        Rebooting"
 	echo "#########################"
-	sudo shutdown -r 0
+	sudo shutdown -r 5
 	## End of script
 }
 function COPY_BASHRC_AND_DELETE_REST {
