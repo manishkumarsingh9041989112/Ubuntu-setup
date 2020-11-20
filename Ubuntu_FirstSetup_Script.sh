@@ -70,7 +70,9 @@ function FIRST_UPGRADE {
 	echo "          The first upgrade taking place here    "
 	echo "#################################################"
 	echo
-	sudo add-apt-repository universe multiverse restricted -y
+	sudo add-apt-repository universe -y
+	sudo add-apt-repository multiverse -y
+	sudo add-apt-repository restricted -y
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y
 	echo
 	echo "######################################################################################"
@@ -270,13 +272,13 @@ function ENABLE_FLATPAKS {
 	#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 function REBOOT_SYSTEM {
-	sleep 3
 	echo
 	echo
 	echo "#########################"
 	echo "        Rebooting"
 	echo "#########################"
-	sudo shutdown -r 5
+	sleep 6
+	sudo reboot now
 	## End of script
 }
 function COPY_BASHRC_AND_DELETE_REST {
