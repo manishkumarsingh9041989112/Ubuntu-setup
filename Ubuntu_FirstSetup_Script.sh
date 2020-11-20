@@ -92,6 +92,152 @@ function FIRST_THINGS_FIRST {
 	sudo apt install build-essential dkms linux-headers-$(uname -r) -y
 	
 }
+#******************************The section contains individual software entries****************************************
+function INSTALL_GOOGLECHROME {
+	sleep 4
+	echo
+	echo "###########################################################"
+	echo "          Google Chrome download and full install          "
+	echo "###########################################################"
+	echo 
+	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+	sudo apt install ./google-chrome-stable_current_amd64.deb -y
+	echo
+}
+function INSTALL_NORDVPN {
+	sleep 3
+	echo
+	echo "###########################################################"
+	echo "          NordVPN download and base install                "
+	echo "###########################################################"
+	echo 
+	wget https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb
+	sudo apt install ./nordvpn-release_1.0.0_all.deb -y
+	sudo apt update -y
+	sudo apt install nordvpn -y
+}	
+function INSTALL_BRAVEBROWSER {
+	sleep 3
+	echo
+	echo "###########################################################"
+	echo "          Brave-browser install                "
+	echo "###########################################################"
+	echo 
+	curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+	echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+	sudo apt update -y
+	sudo apt install brave-browser -y
+}
+function INSTALL_VIVALDIBROWSER {
+	sleep 3
+	echo
+	echo "###########################################################"
+	echo "         Vivaldi-browser install                "
+	echo "###########################################################"
+	echo 
+	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add -
+	sudo add-apt-repository 'deb https://repo.vivaldi.com/archive/deb/ stable main' -y
+	sudo apt update -y
+	sudo apt install vivaldi-stable -y
+}
+function INSTALL_EDGEBROWSER {
+	sleep 3
+	echo
+	echo "###########################################################"
+	echo "         microsoft-edge-dev install                "
+	echo "###########################################################"
+	echo 
+	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+	sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+	sudo rm microsoft.gpg
+	sudo apt update -y
+	sudo apt install microsoft-edge-dev -y
+}
+function INSTALL_VSCODE {
+	sleep 3
+	echo
+	echo "###########################################################"
+	echo "         VSCode install                "
+	echo "###########################################################"
+	echo 
+	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+	sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+	sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+	sudo apt update -y
+	sudo apt install code -y
+}
+function INSTALL_SUBLIMETEXT {
+	sleep 3
+	echo
+	echo "#################################################################"
+	echo "         Adding Sublime text"
+	echo "#################################################################"
+	echo 
+	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+	sudo apt update -y
+	sudo apt install sublime-text -y
+}
+function INSTALL_CALIBRE {
+	sleep 3
+	echo
+	echo "###########################################################"
+	echo "          Calibre Ebook manager installer         "
+	echo "###########################################################"
+	echo 
+	sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+}
+function INSTALL_4KVIDEODOWNLOADER {
+	sleep 3
+	echo
+	echo "##########################################################################"
+	echo "          4k Video Downloader installer might need version        "
+	echo "###########################################################################"
+	echo 
+	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
+	if [[ $? -eq 0 ]]; then
+	chmod +x 4k*amd64.deb
+	sudo apt install ./4k*amd64.deb -y
+	sudo rm -f 4k*amd64.deb
+	else
+	echo "4K Video Downloader install failed"
+	fi	
+}
+#******************************End of section contains individual software entries****************************************
+function INSTALL_APT_MAIN_SOFTWARE {
+	sleep 3
+	echo
+	echo "##########################################################################"
+	echo "          Ubuntu Software install for Main computers       "
+	echo "###########################################################################"
+	echo 
+	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
+	sudo apt install fonts-powerline virtualbox virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
+}
+function INSTALL_APT_VM_SOFTWARE {
+	sleep 3
+	echo
+	echo "##########################################################################"
+	echo "          Ubuntu Software install for Virtual Machines      "
+	echo "###########################################################################"
+	echo 
+	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
+	sudo apt install fonts-powerline virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
+}
+function INSTALL_MICROSOFT_FONTS {
+	sleep 3
+	echo
+	echo "##########################################################################"
+	echo "          Microsoft Truetype fonts install"
+	echo "###########################################################################"
+	echo 
+	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
+	echo -e "\e[31;43m***** Microsoft Fonts*****\e[0m"
+	echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+	sudo apt-get install ttf-mscorefonts-installer -y
+	sudo fc-cache -f -v  
+}
 function ENABLE_SNAPS {
 	echo
 	echo
@@ -146,7 +292,7 @@ function COPY_BASHRC_AND_DELETE_REST {
 	sudo rm -rf ScriptDownloads
 
 }
-function INSTALL_ALL_SOFTWARE {
+function INSTALL_ALL_SOFTWARE_MAIN {
 	echo
 	echo
 	echo "#####################################################"
@@ -155,75 +301,11 @@ function INSTALL_ALL_SOFTWARE {
 	echo 	
 	mkdir ScriptDownloads
 	cd 	  ScriptDownloads
-	echo
-	echo "###########################################################"
-	echo "          NordVPN download and base install                "
-	echo "###########################################################"
-	echo 
-	wget https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb
-	sudo apt install ./nordvpn-release_1.0.0_all.deb -y
-	echo
-	echo "###########################################################"
-	echo "          Google Chrome download and full install          "
-	echo "###########################################################"
-	echo 
-	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-	sudo apt install ./google-chrome-stable_current_amd64.deb -y
-	echo
-	echo "###########################################################"
-	echo "          Calibre Ebook manager installer         "
-	echo "###########################################################"
-	echo 
-	sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
-	echo
-	echo "#################################################################"
-	echo "         Adding Brave-browser,Vivaldi-browser"
-	echo "#################################################################"
-	echo 
-	# BRAVE browser
-	curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-	echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-	# Vivaldi Browser
-	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add -
-	sudo add-apt-repository 'deb https://repo.vivaldi.com/archive/deb/ stable main' -y
-	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
-	chmod +x 4k*amd64.deb
-	sudo apt install ./4k*amd64.deb -y
-	sudo rm -f 4k*amd64.deb
-	echo
-	echo "#################################################################"
-	echo "         Adding Sublime text"
-	echo "#################################################################"
-	echo 
-	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-	echo
-	echo "#################################################################"
-	echo "         Adding VSCode and Microsoft Edge Browser"
-	echo "#################################################################"
-	echo 
-	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-	sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-	sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-	## Setup
-	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-	sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
-	sudo rm microsoft.gpg
-	sudo apt update -y
-	sudo apt install acpi nordvpn fonts-powerline virtualbox virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent 		redshift-gtk sublime-text code microsoft-edge-dev vivaldi-stable brave-browser -y	
-	echo -e "\e[31;43m***** Installing pfetch*****\e[0m"
-	git clone https://github.com/dylanaraps/pfetch.git
-	sudo install pfetch/pfetch /usr/local/bin/
-
-	echo -e "\e[31;43m***** Microsoft Fonts*****\e[0m"
-	echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
-	sudo apt-get install ttf-mscorefonts-installer -y
-	sudo fc-cache -f -v  	
+	INSTALL_GOOGLECHROME && INSTALL_NORDVPN && INSTALL_BRAVEBROWSER && INSTALL_VIVALDIBROWSER && INSTALL_CALIBRE && INSTALL_EDGEBROWSER && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_4KVIDEODOWNLOADER && INSTALL_APT_MAIN_SOFTWARE		
 }
 
 ## Run it all ,boys
-WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE && ENABLE_FLATPAKS && ENABLE_SNAPS && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE_MAIN && ENABLE_FLATPAKS && ENABLE_SNAPS && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
 
 
 
