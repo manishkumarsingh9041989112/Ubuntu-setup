@@ -215,7 +215,7 @@ function INSTALL_APT_MAIN_SOFTWARE {
 	echo "###########################################################################"
 	echo 
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
-	sudo apt install fonts-powerline virtualbox virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
+	sudo apt install fonts-powerline virtualbox virtualbox-guest-additions-iso neovim tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
 }
 function INSTALL_APT_VM_SOFTWARE {
 	sleep 3
@@ -225,7 +225,7 @@ function INSTALL_APT_VM_SOFTWARE {
 	echo "###########################################################################"
 	echo 
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
-	sudo apt install fonts-powerline virtualbox-guest-additions-iso neovim gnome-tweaks tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
+	sudo apt install fonts-powerline virtualbox-guest-additions-iso neovim tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
 }
 function INSTALL_MICROSOFT_FONTS {
 	sleep 3
@@ -267,8 +267,26 @@ function ENABLE_FLATPAKS {
 	echo "          Enabling flatpak support wherever possible  "
 	echo "#####################################################"
 	echo 
-	sudo apt update -y && sudo apt install flatpak -y && sudo apt install gnome-software-plugin-flatpak -y
+	sudo apt update -y && sudo apt install flatpak -y 
+	#sudo apt install gnome-software-plugin-flatpak -y
 	sudo apt update -y
+	#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+}
+function INSTALL_GNOME_SOFTWARE {
+	echo
+	echo
+	echo "#####################################################"
+	echo "          Enabling GNOME supported wherever possible  "
+	echo "#####################################################"
+	echo 
+	STR=$(XDG_CURRENT_DESKTOP)
+	SUB='GNOME'
+	if [[ "$STR" == *"$SUB"* ]]; then
+	  echo "It's there."
+	  sudo apt update -y 
+	  sudo apt install gnome-software-plugin-flatpak gnome-tweaks -y
+	  sudo apt update -y
+	fi
 	#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 function REBOOT_SYSTEM {
@@ -290,7 +308,8 @@ function COPY_BASHRC_AND_DELETE_REST {
 	echo "        deleting downloaded files"
 	echo "##################################################"
 	cd ..
-	sudo cp ".bashrc" /home/"$USERID"/	
+	sudo cp ".bashrc" /home/"$USERID"/
+	sudo cp ".bash_aliases" /home/"$USERID"/
 	sudo rm -rf ScriptDownloads
 
 }
@@ -307,7 +326,7 @@ function INSTALL_ALL_SOFTWARE_MAIN {
 }
 
 ## Run it all ,boys
-WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE_MAIN && ENABLE_FLATPAKS && ENABLE_SNAPS && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE_MAIN && ENABLE_FLATPAKS && ENABLE_SNAPS && INSTALL_GNOME_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
 
 
 
