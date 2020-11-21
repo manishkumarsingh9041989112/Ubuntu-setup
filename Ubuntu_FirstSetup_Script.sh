@@ -246,6 +246,18 @@ function INSTALL_MICROSOFT_FONTS {
 	sudo apt-get install ttf-mscorefonts-installer -y
 	sudo fc-cache -f -v  
 }
+function INSTALL_PFETCH {
+	sleep 3
+	echo
+	echo "###########################################################"
+	echo "          Pfetch installer         "
+	echo "###########################################################"
+	echo 
+	wget https://github.com/dylanaraps/pfetch/archive/master.zip
+	unzip master.zip
+	sudo install pfetch-master/pfetch /usr/local/bin/
+	ls -l /usr/local/bin/pfetch
+}
 function ENABLE_SNAPS {
 	echo
 	echo
@@ -302,7 +314,7 @@ function REBOOT_SYSTEM {
 	echo "#########################"
 	echo "        Rebooting"
 	echo "#########################"
-	sleep 6
+	sleep 4
 	sudo reboot now
 	## End of script
 }
@@ -331,10 +343,10 @@ function INSTALL_ALL_SOFTWARE {
 	cd 	  ScriptDownloads
 	if [ "$MACHINE_VIRTUAL_OR_REAL" != "$IS_VIRTUALBOX_MACHINE" ]; then
 	echo "This is an actual machine set-up"	
-    INSTALL_GOOGLECHROME && INSTALL_NORDVPN && INSTALL_BRAVEBROWSER && INSTALL_VIVALDIBROWSER && INSTALL_CALIBRE && INSTALL_EDGEBROWSER && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_4KVIDEODOWNLOADER && INSTALL_APT_MAIN_SOFTWARE
+    INSTALL_GOOGLECHROME && INSTALL_NORDVPN && INSTALL_BRAVEBROWSER && INSTALL_VIVALDIBROWSER && INSTALL_CALIBRE && INSTALL_EDGEBROWSER && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_PFETCH && INSTALL_4KVIDEODOWNLOADER && INSTALL_APT_MAIN_SOFTWARE
 	else
     echo "This is a virtualbox machine so installing only relevant software"
-    INSTALL_GOOGLECHROME  && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_APT_VM_SOFTWARE
+    INSTALL_GOOGLECHROME  && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_PFETCH && INSTALL_APT_VM_SOFTWARE
 	fi		
 }
 	
