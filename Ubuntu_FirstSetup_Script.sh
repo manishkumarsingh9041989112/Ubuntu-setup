@@ -329,6 +329,7 @@ function COPY_BASHRC_AND_DELETE_REST {
 	cd ..
 	sudo cp ".bashrc" /home/"$USERID"/
 	sudo cp ".bash_aliases" /home/"$USERID"/
+	sudo chown -R "$USERID":"$USERID" /home/"$USERID"
 	sudo rm -rf ScriptDownloads
 
 }
