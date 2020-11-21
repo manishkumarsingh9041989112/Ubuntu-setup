@@ -43,7 +43,13 @@ DIST_CODENAME=$(lsb_release --codename | cut -f2)
 DISTRO_NAME=$(lsb_release -i | cut -f2)
 DATE=(date +%F_%T)
 SCRIPT_VERSION=(0)
+MACHINE_VIRTUAL_OR_REAL=$(sudo dmidecode -s system-manufacturer)
 USERID=devk
+
+#----------------Constants-----------------------------#
+IS_VIRTUALBOX_MACHINE="innotek GmbH"
+
+
 
 function WELCOME_SCREEN {
 	echo "_______________________________________________________"
@@ -225,7 +231,7 @@ function INSTALL_APT_VM_SOFTWARE {
 	echo "###########################################################################"
 	echo 
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
-	sudo apt install fonts-powerline virtualbox-guest-additions-iso neovim tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
+	sudo apt install fonts-powerline virtualbox-guest-additions-iso neovim git vlc redshift-gtk -y
 }
 function INSTALL_MICROSOFT_FONTS {
 	sleep 3
@@ -284,7 +290,8 @@ function INSTALL_GNOME_SOFTWARE {
 	if [[ "$STR" == *"$SUB"* ]]; then
 	  echo "It's there."
 	  sudo apt update -y 
-	  sudo apt install gnome-software-plugin-flatpak gnome-tweaks -y
+	  sudo apt install gnome-tweaks -y
+	  sudo apt install gnome-software-plugin-flatpak -y
 	  sudo apt update -y
 	fi
 	#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -313,7 +320,7 @@ function COPY_BASHRC_AND_DELETE_REST {
 	sudo rm -rf ScriptDownloads
 
 }
-function INSTALL_ALL_SOFTWARE_MAIN {
+function INSTALL_ALL_SOFTWARE {
 	echo
 	echo
 	echo "#####################################################"
@@ -322,11 +329,25 @@ function INSTALL_ALL_SOFTWARE_MAIN {
 	echo 	
 	mkdir ScriptDownloads
 	cd 	  ScriptDownloads
-	INSTALL_GOOGLECHROME && INSTALL_NORDVPN && INSTALL_BRAVEBROWSER && INSTALL_VIVALDIBROWSER && INSTALL_CALIBRE && INSTALL_EDGEBROWSER && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_4KVIDEODOWNLOADER && INSTALL_APT_MAIN_SOFTWARE		
+	if [ "$MACHINE_VIRTUAL_OR_REAL" = "$IS_VIRTUALBOX_MACHINE" ]; then
+    echo "This is a virtualbox machine so installing only relevant software"
+    INSTALL_GOOGLECHROME && INSTALL_NORDVPN && INSTALL_BRAVEBROWSER && INSTALL_VIVALDIBROWSER && INSTALL_CALIBRE && INSTALL_EDGEBROWSER && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_4KVIDEODOWNLOADER && INSTALL_APT_MAIN_SOFTWARE
+	else
+    echo "This is an actual machine set-up"
+    INSTALL_GOOGLECHROME  && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_APT_VM_SOFTWARE
+	fi		
 }
+	
 
 ## Run it all ,boys
-WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE_MAIN && ENABLE_FLATPAKS && ENABLE_SNAPS && INSTALL_GNOME_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+	if [ "$MACHINE_VIRTUAL_OR_REAL" = "$IS_VIRTUALBOX_MACHINE" ]; then
+    echo "This is a virtualbox machine so installing only relevant software"
+    WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+    else
+    echo "This is an actual machine set-up"
+    WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE && ENABLE_FLATPAKS && ENABLE_SNAPS && INSTALL_GNOME_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+	fi
+
 
 
 
