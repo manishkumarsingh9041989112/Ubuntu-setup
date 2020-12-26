@@ -134,6 +134,14 @@ function INSTALL_VIVALDIBROWSER {
 	sudo apt install vivaldi-stable -y
 	echobanner "Vivaldi-browser install done"
 }
+function INSTALL_OPERABROWSER {
+	sleep 3
+	echobanner "Opera browser install"
+	wget -qO- https://deb.opera.com/archive.key | sudo apt-key add -
+	echo "deb https://deb.opera.com/opera-stable/ stable non-free" | sudo tee /etc/apt/sources.list.d/opera-stable.list
+	DEBIAN_FRONTEND='noninteractive' sudo apt-get update && sudo apt-get install opera-stable -y
+	echobanner "Opera browser install completed"
+}
 function INSTALL_EDGEBROWSER {
 	sleep 3
 	echobanner "microsoft-edge-dev-browser install"
@@ -251,13 +259,25 @@ function INSTALL_GNOME_SOFTWARE {
 	#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 function REBOOT_SYSTEM {
-	echo
-	echo
-	echo "#########################"
-	echo "        Rebooting"
-	echo "#########################"
+	echobanner "Rebooting"
 	sleep 4
 	sudo reboot now
+	## End of script
+}
+function CREATE_FOLDER_SYSTEM {
+	echobanner "Creating a System of Folders"
+	sleep 4
+	cd /home/"$USERID"
+	cd Documents
+	mkdir GitRepos Locker LogBoxer
+	cd ../Downloads
+	mkdir Books Videos
+	cd Books
+	mkdir Computers Miscellany Novels
+	cd ../Videos
+	mkdir Computorials Tutorials Movies 
+	cd ~
+	mkdir SharedVMFolder
 	## End of script
 }
 function COPY_BASHRC_AND_DELETE_REST {
@@ -277,7 +297,7 @@ function INSTALL_ALL_SOFTWARE {
 	cd 	  ScriptDownloads
 	if [ "$MACHINE_VIRTUAL_OR_REAL" != "$IS_VIRTUALBOX_MACHINE" ]; then
 	echo "This is an actual machine set-up"	
-    INSTALL_GOOGLECHROME && INSTALL_NORDVPN && INSTALL_BRAVEBROWSER && INSTALL_VIVALDIBROWSER && INSTALL_CALIBRE && INSTALL_EDGEBROWSER && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_PFETCH && INSTALL_4KVIDEODOWNLOADER && INSTALL_APT_MAIN_SOFTWARE
+    INSTALL_GOOGLECHROME && INSTALL_NORDVPN && INSTALL_BRAVEBROWSER && INSTALL_VIVALDIBROWSER && INSTALL_CALIBRE && INSTALL_EDGEBROWSER && INSTALL_OPERABROWSER && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_PFETCH && INSTALL_4KVIDEODOWNLOADER && INSTALL_APT_MAIN_SOFTWARE
 	else
     echo "This is a virtualbox machine so installing only relevant software"
     INSTALL_GOOGLECHROME  && INSTALL_VSCODE && INSTALL_SUBLIMETEXT && INSTALL_MICROSOFT_FONTS && INSTALL_PFETCH && INSTALL_APT_VM_SOFTWARE
@@ -288,10 +308,10 @@ function INSTALL_ALL_SOFTWARE {
 ## Run it all ,boys
 	if [ "$MACHINE_VIRTUAL_OR_REAL" = "$IS_VIRTUALBOX_MACHINE" ]; then
     echo "This is a virtualbox machine so installing only relevant software"
-    WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+    WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE  && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
     else
     echo "This is an actual machine set-up"
-    WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE && ENABLE_FLATPAKS && ENABLE_SNAPS && INSTALL_GNOME_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+    WELCOME_SCREEN  && FIRST_UPGRADE && FIRST_THINGS_FIRST && INSTALL_ALL_SOFTWARE && ENABLE_FLATPAKS && INSTALL_GNOME_SOFTWARE && CREATE_FOLDER_SYSTEM && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
 	fi
 
 
