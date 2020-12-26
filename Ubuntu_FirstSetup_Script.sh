@@ -49,53 +49,52 @@ USERID=devk
 #----------------Constants-----------------------------#
 IS_VIRTUALBOX_MACHINE="innotek GmbH"
 
+function scbanner()
+{
+  echo "+------------------------------------------+"
+  printf "| %-40s |\n" "`date`"
+  echo "|                                          |"
+  printf "|`tput bold` %-40s `tput sgr0`|\n" "$@"
+  echo "+------------------------------------------+"
+}
+function echobanner()
+{ 
+  echo $1 >> textfile.txt
+  fold -w 40 -s textfile.txt > folded_textfile.txt
+  (perl -lne 'printf "%-40s\n", $_' folded_textfile.txt) > textconform.txt
+  textconform=$(cat textconform.txt)
 
+  echo "+------------------------------------------+"
+  echo "|          Start                           |"
+  echo "+------------------------------------------+"
+  printf "`tput bold`%-40s`tput sgr0`\n" "$textconform"
+  echo "+------------------------------------------+"
+  echo "|          End                             |"
+  echo "+------------------------------------------+"
+
+  rm -f textfile.txt folded_textfile.txt textconform.txt
+
+}
 
 function WELCOME_SCREEN {
-	echo "_______________________________________________________"
-	echo "                                                       "
-	echo "            Ubuntu_FirstSetup_Script  $SCRIPT_VERSION  "
-	echo "            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   "
-	echo "                                                       "
-	echo " The Script basically installs some software after the "
-	echo " first reboot of Ubuntu/Linux Mint/PopOS.              "
-	echo "                                                       "
-	echo "                                                       "
-	echo " The system expects the apt package manager to be      "
-	echo " present                                               "
-	echo "_______________________________________________________"
-	echo
-	echo " Ubuntu_FirstSetup_Script will start in 5 seconds...   "
-
+    sudo apt install figlet -y
+	printf "Ubuntusetup Script"|figlet -f banner -t;dater=$(date +"%d %B %Y %H:%M:%S");printf "$dater"|figlet -f standard -t
+	echobanner "The Script basically installs some software after the first reboot of Ubuntu/Linux Mint/PopOS.The system expects the apt package manager to be present. As well as the first reboot is done."
 	sleep 4
 }
 function FIRST_UPGRADE {
-	echo
-	echo
-	echo "#################################################"
-	echo "          The first upgrade taking place here    "
-	echo "#################################################"
-	echo
+	echobanner "The first upgrade taking place here"
 	sudo add-apt-repository universe -y
 	sudo add-apt-repository multiverse -y
 	sudo add-apt-repository restricted -y
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y
-	echo
-	echo "######################################################################################"
-	echo "          The first upgrade is now complete: and now going for software installs"
-	echo "#######################################################################################"
-	echo
+	echobanner "The first upgrade is now complete: and now going for software installs"
 	sleep 3
 }
 
 
 function FIRST_THINGS_FIRST {
-	echo
-	echo
-	echo "#################################################"
-	echo "Basic utilities installation"
-	echo "#################################################"
-	echo
+	echobanner "Basic utilities installation"
 	sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip -y
 	sudo apt install build-essential dkms linux-headers-$(uname -r) -y
 	
@@ -103,106 +102,77 @@ function FIRST_THINGS_FIRST {
 #******************************The section contains individual software entries****************************************
 function INSTALL_GOOGLECHROME {
 	sleep 4
-	echo
-	echo "###########################################################"
-	echo "          Google Chrome download and full install          "
-	echo "###########################################################"
-	echo 
+	echobanner "Google Chrome download and full install"
 	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 	sudo apt install ./google-chrome-stable_current_amd64.deb -y
-	echo
+	echobanner "Google Chrome completed"
 }
 function INSTALL_NORDVPN {
 	sleep 3
-	echo
-	echo "###########################################################"
-	echo "          NordVPN download and base install                "
-	echo "###########################################################"
-	echo 
+	echobanner "NordVPN download and base install" 
 	wget https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb
 	sudo apt install ./nordvpn-release_1.0.0_all.deb -y
 	sudo apt update -y
 	sudo apt install nordvpn -y
+	echobanner "NordVPN download and base install done" 
 }	
 function INSTALL_BRAVEBROWSER {
 	sleep 3
-	echo
-	echo "###########################################################"
-	echo "          Brave-browser install                "
-	echo "###########################################################"
-	echo 
+	echobanner "Brave-browser install"
 	curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
 	echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 	sudo apt update -y
 	sudo apt install brave-browser -y
+	echobanner "Brave-browser install done"
 }
 function INSTALL_VIVALDIBROWSER {
 	sleep 3
-	echo
-	echo "###########################################################"
-	echo "         Vivaldi-browser install                "
-	echo "###########################################################"
-	echo 
+	echobanner "Vivaldi-browser install"
 	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add -
 	sudo add-apt-repository 'deb https://repo.vivaldi.com/archive/deb/ stable main' -y
 	sudo apt update -y
 	sudo apt install vivaldi-stable -y
+	echobanner "Vivaldi-browser install done"
 }
 function INSTALL_EDGEBROWSER {
 	sleep 3
-	echo
-	echo "###########################################################"
-	echo "         microsoft-edge-dev install                "
-	echo "###########################################################"
-	echo 
+	echobanner "microsoft-edge-dev-browser install"
 	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 	sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
 	sudo rm microsoft.gpg
 	sudo apt update -y
 	sudo apt install microsoft-edge-dev -y
+	echobanner "microsoft-edge-dev-browser install completed"
 }
 function INSTALL_VSCODE {
 	sleep 3
-	echo
-	echo "###########################################################"
-	echo "         VSCode install                "
-	echo "###########################################################"
-	echo 
+	echobanner "VSCode install" 
 	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 	sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
 	sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 	sudo apt update -y
 	sudo apt install code -y
+	echobanner "VSCode install completed" 
 }
 function INSTALL_SUBLIMETEXT {
 	sleep 3
-	echo
-	echo "#################################################################"
-	echo "         Adding Sublime text"
-	echo "#################################################################"
-	echo 
+	echobanner "Adding Sublime text"
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 	sudo apt update -y
 	sudo apt install sublime-text -y
+	echobanner "Adding Sublime text completed"
 }
 function INSTALL_CALIBRE {
 	sleep 3
-	echo
-	echo "###########################################################"
-	echo "          Calibre Ebook manager installer         "
-	echo "###########################################################"
-	echo 
+	echobanner "Calibre Ebook manager installer" 
 	sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+	echobanner "Calibre Ebook manager installer completed" 
 }
 function INSTALL_4KVIDEODOWNLOADER {
 	sleep 3
-	echo
-	echo "##########################################################################"
-	echo "          4k Video Downloader installer might need version        "
-	echo "###########################################################################"
-	echo 
+	echobanner "4k Video Downloader installer might need version"
 	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
 	if [[ $? -eq 0 ]]; then
 	chmod +x 4k*amd64.deb
@@ -211,66 +181,48 @@ function INSTALL_4KVIDEODOWNLOADER {
 	else
 	echo "4K Video Downloader install failed"
 	fi	
+	echobanner "4k Video Downloader installer completed"
 }
 #******************************End of section contains individual software entries****************************************
 function INSTALL_APT_MAIN_SOFTWARE {
 	sleep 3
-	echo
-	echo "##########################################################################"
-	echo "          Ubuntu Software install for Main computers       "
-	echo "###########################################################################"
-	echo 
+	echobanner "Ubuntu Software install for Main computers" 
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 	sudo apt install fonts-powerline virtualbox virtualbox-guest-additions-iso neovim tlp tlp-rdw clamav clamtk git mpv qbittorrent redshift-gtk -y
+	echobanner "Ubuntu Software install for Main computers completed" 
 }
 function INSTALL_APT_VM_SOFTWARE {
 	sleep 3
-	echo
-	echo "##########################################################################"
-	echo "          Ubuntu Software install for Virtual Machines      "
-	echo "###########################################################################"
-	echo 
+	echobanner "Ubuntu Software install for Virtual Machines" 
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 	sudo apt install fonts-powerline virtualbox-guest-additions-iso neovim git vlc redshift-gtk -y
+	echobanner "Ubuntu Software install for Virtual Machines completed" 
 }
 function INSTALL_MICROSOFT_FONTS {
 	sleep 3
-	echo
-	echo "##########################################################################"
-	echo "          Microsoft Truetype fonts install"
-	echo "###########################################################################"
-	echo 
+	echobanner "Microsoft Truetype fonts install"
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 	echo -e "\e[31;43m***** Microsoft Fonts*****\e[0m"
 	echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 	sudo apt-get install ttf-mscorefonts-installer -y
 	sudo fc-cache -f -v  
+	echobanner "Microsoft Truetype fonts install completed"
 }
 function INSTALL_PFETCH {
 	sleep 3
-	echo
-	echo "###########################################################"
-	echo "          Pfetch installer         "
-	echo "###########################################################"
-	echo 
+	echobanner "Pfetch installer "
 	wget https://github.com/dylanaraps/pfetch/archive/master.zip
 	unzip master.zip
 	sudo install pfetch-master/pfetch /usr/local/bin/
 	ls -l /usr/local/bin/pfetch
+	echobanner "Pfetch installer completed"
 }
 function ENABLE_SNAPS {
-	echo
-	echo
-	echo "#####################################################"
-	echo "          Enabling snap support wherever possible  "
-	echo "#####################################################"
-	echo 
+	echobanner "Enabling snap support wherever possible "
 
 	SNAPSTOPFILE=/etc/apt/preferences.d/nosnap.pref
 	if [ -f "$SNAPSTOPFILE" ]; then
-		echo "#####################################################"
-		echo "         The snap stopper file is being removed  "
-		echo "#####################################################"
+		echobanner "The snap stopper file is being removed"
 		sudo rm -f "$SNAPSTOPFILE"
 	fi	
 	sudo apt update -y && sudo apt install snapd -y
@@ -279,24 +231,14 @@ function ENABLE_SNAPS {
 
 
 function ENABLE_FLATPAKS {
-	echo
-	echo
-	echo "#####################################################"
-	echo "          Enabling flatpak support wherever possible  "
-	echo "#####################################################"
-	echo 
+	echobanner "Enabling flatpak support wherever possible " 
 	sudo apt update -y && sudo apt install flatpak -y 
 	#sudo apt install gnome-software-plugin-flatpak -y
 	sudo apt update -y
 	#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 function INSTALL_GNOME_SOFTWARE {
-	echo
-	echo
-	echo "#####################################################"
-	echo "          Enabling GNOME supported wherever possible  "
-	echo "#####################################################"
-	echo 
+	echobanner "Enabling GNOME supported wherever possible" 
 	STR=$(XDG_CURRENT_DESKTOP)
 	SUB='GNOME'
 	if [[ "$STR" == *"$SUB"* ]]; then
@@ -320,12 +262,7 @@ function REBOOT_SYSTEM {
 }
 function COPY_BASHRC_AND_DELETE_REST {
 	sleep 3
-	echo
-	echo
-	echo "##################################################"
-	echo "        Copying the .bashrc files and "
-	echo "        deleting downloaded files"
-	echo "##################################################"
+	echobanner "Copying the .bashrc files and deleting downloaded files"
 	cd ..
 	sudo cp ".bashrc" /home/"$USERID"/
 	sudo cp ".bash_aliases" /home/"$USERID"/
@@ -334,12 +271,8 @@ function COPY_BASHRC_AND_DELETE_REST {
 
 }
 function INSTALL_ALL_SOFTWARE {
-	echo
-	echo
-	echo "#####################################################"
-	echo "          Create  a directory for any DEB packages   "
-	echo "#####################################################"
-	echo 	
+	
+	echobanner "Create  a directory for any DEB packages"
 	mkdir ScriptDownloads
 	cd 	  ScriptDownloads
 	if [ "$MACHINE_VIRTUAL_OR_REAL" != "$IS_VIRTUALBOX_MACHINE" ]; then
