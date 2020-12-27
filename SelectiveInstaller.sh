@@ -140,6 +140,12 @@ function INSTALL_NEOVIM {
 	sudo apt install neovim -y
 	echobanner "Neovim install completed"
 }
+function INSTALL_VARIETY {
+	sleep 3
+	echobanner "Variety download and full install"
+	sudo apt install variety -y
+	echobanner "Variety install completed"
+}
 function INSTALL_GIT {
 	sleep 3
 	echobanner "Git download and full install"
@@ -450,6 +456,7 @@ function INSTALL_ALL_APT_SOFTWARE {
 	INSTALL_4KVIDEODOWNLOADER
 	INSTALL_MICROSOFT_FONTS
 	INSTALL_PFETCH
+	INSTALL_VARIETY
 	INSTALL_GNOME_SOFTWARE
 	echobanner "Installing apt software donein real machines"
 	## End of script
