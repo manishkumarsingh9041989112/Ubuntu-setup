@@ -398,6 +398,9 @@ function CREATE_FOLDER_SYSTEM {
 	cd /home/"$USERID"
 	cd Documents
 	mkdir GitRepos Locker LogBoxer
+	cd GitRepos
+	git clone https://github.com/manishkumarsingh9041989112/Ubuntusetup.git
+	cd /home/"$USERID"
 	cd ../Downloads
 	mkdir Books Videos
 	cd Books
