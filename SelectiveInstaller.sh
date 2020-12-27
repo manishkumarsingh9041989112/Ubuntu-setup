@@ -491,6 +491,13 @@ function INSTALL_ALL_FLATPAK_SOFTWARE {
 	echobanner "Installing flatpak software done"
 	## End of script
 }
+function RESTORE_BROWSERS {
+	echobanner "Restoring browser details"
+	unzip -o -d /home/"$USERID" MozillaArchive.zip
+	unzip -o -d /home/"$USERID"/.config ConfigArchive.zip
+	echobanner "Restore of browser details done"
+	## End of script
+}
 function FIRST_RUN_COMMON {
 	echobanner "Installing first run software"
 	WELCOME_SCREEN && FIRST_UPGRADE && ENABLE_FLATPAKS && REBOOT_SYSTEM
@@ -501,7 +508,7 @@ function SECOND_RUN {
 	echobanner "Installing Second run software"
 	if [ "$MACHINE_VIRTUAL_OR_REAL" != "$IS_VIRTUALBOX_MACHINE" ]; then
 	echo "This is an actual machine set-up"	
-    WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE && INSTALL_ALL_FLATPAK_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && CREATE_FOLDER_SYSTEM && REBOOT_SYSTEM
+    WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE && INSTALL_ALL_FLATPAK_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && RESTORE_BROWSERS && CREATE_FOLDER_SYSTEM && REBOOT_SYSTEM
 	else
     echo "This is a virtualbox machine so installing only relevant software"
     WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE_VM && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
