@@ -537,7 +537,8 @@ FIRST_RUN_COMMON
 
 ########################Run 2########################################
 
-SECOND_RUN && INSTALL_BRAVE_OPERA_BROWSERS
+SECOND_RUN 
+INSTALL_BRAVE_OPERA_BROWSERS
 
 
 
