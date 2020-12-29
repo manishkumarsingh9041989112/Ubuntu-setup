@@ -433,7 +433,6 @@ function INSTALL_ALL_APT_SOFTWARE {
 	mkdir ScriptDownloads
 	cd 	  ScriptDownloads
 	INSTALL_BASIC_UTILITIES
-	#INSTALL_VBOX_GUESTADDITIONS
 	INSTALL_VIRTUALBOX
 	INSTALL_NEOVIM
 	INSTALL_GIT
@@ -477,7 +476,7 @@ function INSTALL_ALL_APT_SOFTWARE_VM {
 	INSTALL_UCARESYSTEMCORE
 	INSTALL_GOOGLECHROME
 	INSTALL_NORDVPN
-	INSTALL_BRAVEBROWSER
+	#INSTALL_BRAVEBROWSER
 	INSTALL_SUBLIMETEXT
 	INSTALL_MICROSOFT_FONTS
 	INSTALL_PFETCH
@@ -525,13 +524,21 @@ function SECOND_RUN {
 	echobanner "Installing Second run software done"
 	## End of script
 }
+function INSTALL_BRAVE_OPERA_BROWSERS {
+	echobanner "Installing Brave and Opera Browsers Separately"
+	INSTALL_BRAVEBROWSER
+	INSTALL_OPERABROWSER	
+	echobanner "Installing Brave and Opera Browsers done"
+	## End of script
+}
 ########################Run 1########################################
 
 FIRST_RUN_COMMON
 
 ########################Run 2########################################
 
-SECOND_RUN
+SECOND_RUN && INSTALL_BRAVE_OPERA_BROWSERS
+
 
 
 
