@@ -337,7 +337,7 @@ function INSTALL_GNOME_SOFTWARE {
 	fi
 	#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
-#----------------------Snaps installed are below-------------------------------------------
+#----------------------Flatpaks installed are below-------------------------------------------
 
 function INSTALL_TELEGRAM {
 	echobanner "Installing Telegram flatpak" 
@@ -390,6 +390,11 @@ function INSTALL_CHROMIUM {
 	echobanner "Chromium flatpak installed" 
 }
 
+function INSTALL_KLAVARO {
+	echobanner "Installing Klavaro flatpak" 
+	flatpak install flathub net.sourceforge.Klavaro -y
+	echobanner "Klavaro flatpak installed" 
+}
 #******************************End of section contains individual software entries****************************************
 
 function REBOOT_SYSTEM {
@@ -495,6 +500,7 @@ function INSTALL_ALL_FLATPAK_SOFTWARE {
 	INSTALL_OKULAR
 	INSTALL_BOOKWORM
 	INSTALL_CHROMIUM
+	INSTALL_KLAVARO
 	echobanner "Installing flatpak software done"
 	## End of script
 }
