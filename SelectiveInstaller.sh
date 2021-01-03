@@ -317,6 +317,12 @@ function INSTALL_PFETCH {
 	ls -l /usr/local/bin/pfetch
 	echobanner "Pfetch installer completed"
 }
+function INSTALL_ADB_AND_FASTBOOT {
+	sleep 3
+	echobanner "ADB and Fastboot installer "
+	sudo apt-get install android-tools-adb android-tools-fastboot -y
+	echobanner "ADB and Fastboot installer completed"
+}
 function ENABLE_FLATPAKS {
 	echobanner "Enabling flatpak support wherever possible " 
 	sudo apt update -y && sudo apt install flatpak -y 
