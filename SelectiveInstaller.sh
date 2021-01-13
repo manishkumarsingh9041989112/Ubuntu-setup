@@ -422,7 +422,8 @@ function CREATE_FOLDER_SYSTEM {
 	mkdir Books Videos
 	cd Books
 	mkdir Computers Miscellany Novels
-	cd ../Videos
+	cd /home/"$USERID"
+	cd Videos
 	mkdir Computorials Tutorials Movies 
 	cd /home/"$USERID"
 	mkdir SharedVMFolder
