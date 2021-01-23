@@ -3,13 +3,13 @@ set -e
 #
 #
 # Checking if the user is root or nah!
-if [[ $EUID -ne 0 ]] ; then
-    clear
-    echo ""
-    echo "Selective Installer must be run as root or with sudo. Now I will just exit..." 1>&2
-    echo ""
-    sleep 2
-    exit 1
+if [[ $EUID -ne 0 ]]; then
+	clear
+	echo ""
+	echo "Selective Installer must be run as root or with sudo. Now I will just exit..." 1>&2
+	echo ""
+	sleep 2
+	exit 1
 fi
 #Check complete
 
@@ -26,8 +26,7 @@ IS_VIRTUALBOX_MACHINE="innotek GmbH"
 
 #----------------Functions----------------------------#
 
-
-function WELCOME_SCREEN {
+function WELCOME_SCREEN() {
 	echo "_______________________________________________________"
 	echo "                                                       "
 	echo "            Selective Installer                        "
@@ -69,25 +68,24 @@ function WELCOME_SCREEN {
 
 	sleep 6
 }
-function echobanner()
-{ 
-  echo $1 >> textfile.txt
-  fold -w 40 -s textfile.txt > folded_textfile.txt
-  (perl -lne 'printf "%-40s\n", $_' folded_textfile.txt) > textconform.txt
-  textconform=$(cat textconform.txt)
+function echobanner() {
+	echo $1 >>textfile.txt
+	fold -w 40 -s textfile.txt >folded_textfile.txt
+	(perl -lne 'printf "%-40s\n", $_' folded_textfile.txt) >textconform.txt
+	textconform=$(cat textconform.txt)
 
-  echo "+------------------------------------------+"
-  echo "|          Start                           |"
-  echo "+------------------------------------------+"
-  printf "`tput bold`%-40s`tput sgr0`\n" "$textconform"
-  echo "+------------------------------------------+"
-  echo "|          End                             |"
-  echo "+------------------------------------------+"
+	echo "+------------------------------------------+"
+	echo "|          Start                           |"
+	echo "+------------------------------------------+"
+	printf "$(tput bold)%-40s$(tput sgr0)\n" "$textconform"
+	echo "+------------------------------------------+"
+	echo "|          End                             |"
+	echo "+------------------------------------------+"
 
-  rm -f textfile.txt folded_textfile.txt textconform.txt
+	rm -f textfile.txt folded_textfile.txt textconform.txt
 
 }
-function FIRST_UPGRADE {
+function FIRST_UPGRADE() {
 	echobanner "The first upgrade taking place here"
 	sudo add-apt-repository universe -y
 	sudo add-apt-repository multiverse -y
@@ -96,93 +94,110 @@ function FIRST_UPGRADE {
 	echobanner "The first upgrade is now complete: and now going for software installs"
 	sleep 3
 }
-function FIRST_UPDATE {
+function FIRST_UPDATE() {
 	echobanner "The first update taking place here"
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y
 	echobanner "The first update is now complete: and now going for software installs"
 	sleep 3
 }
-function INSTALL_BASIC_UTILITIES {
+function INSTALL_BASIC_UTILITIES() {
 	echobanner "Basic utilities installation"
 	sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip -y
 	sudo apt install build-essential dkms linux-headers-$(uname -r) -y
-	
+
 }
 #******************************The section contains individual software entries****************************************
-function INSTALL_VBOX_GUESTADDITIONS {
+function INSTALL_VBOX_GUESTADDITIONS() {
 	sleep 4
 	echobanner "VirtualBox guest additions download and full install"
 	sudo apt install virtualbox-guest-additions-iso -y
 	echobanner "VirtualBox guest additions install completed"
 }
-function INSTALL_VIRTUALBOX {
+function INSTALL_VIRTUALBOX() {
 	sleep 4
 	echobanner "VirtualBox download and full install"
 	sudo apt install virtualbox -y
 	INSTALL_VBOX_GUESTADDITIONS
 	echobanner "VirtualBox install completed"
 }
-function INSTALL_CORRETTO_JDK11 {
+function INSTALL_CORRETTO_JDK11() {
 	sleep 4
 	echobanner "Amazon JDK download and full install"
 	sudo apt install java-common -y
-	wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add - 
- 	sudo add-apt-repository 'deb https://apt.corretto.aws stable main' -y
- 	sudo apt-get update -y; 
- 	sudo apt-get install -y java-11-amazon-corretto-jdk
- 	sudo update-alternatives --config java
- 	sudo update-alternatives --config javac
+	wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add -
+	sudo add-apt-repository 'deb https://apt.corretto.aws stable main' -y
+	sudo apt-get update -y
+	sudo apt-get install -y java-11-amazon-corretto-jdk
+	sudo update-alternatives --config java
+	sudo update-alternatives --config javac
 	echobanner "Amazon JDK install completed"
 }
-function INSTALL_NEOVIM {
+function INSTALL_NEOVIM() {
 	sleep 3
 	echobanner "Neovim download and full install"
 	sudo apt install neovim -y
 	echobanner "Neovim install completed"
 }
-function INSTALL_VARIETY {
+function INSTALL_VARIETY() {
 	sleep 3
 	echobanner "Variety download and full install"
 	sudo apt install variety -y
 	echobanner "Variety install completed"
 }
-function INSTALL_GIT {
+function INSTALL_GIT() {
 	sleep 3
 	echobanner "Git download and full install"
 	sudo apt install git -y
 	echobanner "Git install completed"
 }
-function INSTALL_REDSHIFT {
+function INSTALL_REDSHIFT() {
 	sleep 3
 	echobanner "Redshift download and full install"
 	sudo apt install redshift-gtk -y
 	echobanner "Redshift install completed"
 }
-function INSTALL_QBITTORRENT {
+function INSTALL_QBITTORRENT() {
 	sleep 3
 	echobanner "Qbittorrent download and full install"
 	sudo apt install qbittorrent -y
 	echobanner "Qbittorrent install completed"
 }
-function INSTALL_POWERLINEFONTS {
+function INSTALL_POWERLINEFONTS() {
 	sleep 3
 	echobanner "Powerline fonts download and full install"
 	sudo apt install fonts-powerline -y
 	echobanner "Powerline fonts install completed"
 }
-function INSTALL_MPV {
+function INSTALL_MPV() {
 	sleep 3
 	echobanner "MPV download and full install"
 	sudo apt install mpv -y
 	echobanner "MPV install completed"
 }
-function INSTALL_VLC {
+function INSTALL_VLC() {
 	sleep 3
 	echobanner "VLC download and full install"
 	sudo apt install vlc -y
 	echobanner "VLC install completed"
 }
-function INSTALL_UCARESYSTEMCORE {
+function INSTALL_VSCODIUM() {
+	sleep 3
+	echobanner "VSCODIUM(FOSS version of VS Code) download and full install"
+	wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg && echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee --append /etc/apt/sources.list.d/vscodium.list
+	sudo apt update -y
+	sudo apt install codium -y
+	echobanner "VSCODIUM(FOSS version of VS Code) install completed"
+}
+function INSTALL_ATOM() {
+	sleep 3
+	echobanner "Atom text Editor download and full install"
+	wget -q https://packagecloud.io/AtomEditor/atom/gpgkey -O- | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main"
+	sudo apt update -y
+	sudo apt install atom -y
+	echobanner "Atom text Editor install completed"
+}
+function INSTALL_UCARESYSTEMCORE() {
 	sleep 3
 	echobanner "uCareSystem Core download and full install"
 	#uCareSystem installer
@@ -194,36 +209,36 @@ function INSTALL_UCARESYSTEMCORE {
 	sudo apt-get install ucaresystem-core -y
 	echobanner "uCareSystem Core install completed"
 }
-function INSTALL_4KVIDEODOWNLOADER {
+function INSTALL_4KVIDEODOWNLOADER() {
 	sleep 3
 	echobanner "4k Video Downloader installer might need version"
 	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
 	if [[ $? -eq 0 ]]; then
-	chmod +x 4k*amd64.deb
-	sudo apt install ./4k*amd64.deb -y
-	sudo rm -f 4k*amd64.deb
+		chmod +x 4k*amd64.deb
+		sudo apt install ./4k*amd64.deb -y
+		sudo rm -f 4k*amd64.deb
 	else
-	echo "4K Video Downloader install failed"
-	fi	
+		echo "4K Video Downloader install failed"
+	fi
 	echobanner "4k Video Downloader installer completed"
 }
-function INSTALL_GOOGLECHROME {
+function INSTALL_GOOGLECHROME() {
 	sleep 4
 	echobanner "Google Chrome download and full install"
 	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 	sudo apt install ./google-chrome-stable_current_amd64.deb -y
 	echobanner "Google Chrome completed"
 }
-function INSTALL_NORDVPN {
+function INSTALL_NORDVPN() {
 	sleep 3
-	echobanner "NordVPN download and base install" 
+	echobanner "NordVPN download and base install"
 	wget https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb
 	sudo apt install ./nordvpn-release_1.0.0_all.deb -y
 	sudo apt update -y
 	sudo apt install nordvpn -y
-	echobanner "NordVPN download and base install done" 
-}	
-function INSTALL_BRAVEBROWSER {
+	echobanner "NordVPN download and base install done"
+}
+function INSTALL_BRAVEBROWSER() {
 	sleep 3
 	echobanner "Brave-browser install"
 	curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
@@ -232,7 +247,7 @@ function INSTALL_BRAVEBROWSER {
 	sudo apt install brave-browser -y
 	echobanner "Brave-browser install done"
 }
-function INSTALL_VIVALDIBROWSER {
+function INSTALL_VIVALDIBROWSER() {
 	sleep 3
 	echobanner "Vivaldi-browser install"
 	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | sudo apt-key add -
@@ -241,7 +256,7 @@ function INSTALL_VIVALDIBROWSER {
 	sudo apt install vivaldi-stable -y
 	echobanner "Vivaldi-browser install done"
 }
-function INSTALL_OPERABROWSER {
+function INSTALL_OPERABROWSER() {
 	sleep 3
 	echobanner "Opera browser install"
 	wget -qO- https://deb.opera.com/archive.key | sudo apt-key add -
@@ -249,10 +264,10 @@ function INSTALL_OPERABROWSER {
 	DEBIAN_FRONTEND='noninteractive' sudo apt-get update && sudo apt-get install opera-stable -y
 	echobanner "Opera browser install completed"
 }
-function INSTALL_EDGEBROWSER {
+function INSTALL_EDGEBROWSER() {
 	sleep 3
 	echobanner "microsoft-edge-dev-browser install"
-	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
 	sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 	sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
 	sudo rm microsoft.gpg
@@ -260,17 +275,17 @@ function INSTALL_EDGEBROWSER {
 	sudo apt install microsoft-edge-dev -y
 	echobanner "microsoft-edge-dev-browser install completed"
 }
-function INSTALL_VSCODE {
+function INSTALL_VSCODE() {
 	sleep 3
-	echobanner "VSCode install" 
-	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+	echobanner "VSCode install"
+	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >packages.microsoft.gpg
 	sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
 	sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 	sudo apt update -y
 	sudo apt install code -y
-	echobanner "VSCode install completed" 
+	echobanner "VSCode install completed"
 }
-function INSTALL_SUBLIMETEXT {
+function INSTALL_SUBLIMETEXT() {
 	sleep 3
 	echobanner "Adding Sublime text"
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
@@ -279,36 +294,36 @@ function INSTALL_SUBLIMETEXT {
 	sudo apt install sublime-text -y
 	echobanner "Adding Sublime text completed"
 }
-function INSTALL_CALIBRE {
+function INSTALL_CALIBRE() {
 	sleep 3
-	echobanner "Calibre Ebook manager installer" 
+	echobanner "Calibre Ebook manager installer"
 	sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
-	echobanner "Calibre Ebook manager installer completed" 
+	echobanner "Calibre Ebook manager installer completed"
 }
-function INSTALL_4KVIDEODOWNLOADER {
+function INSTALL_4KVIDEODOWNLOADER() {
 	sleep 3
 	echobanner "4k Video Downloader installer might need version"
 	wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
 	if [[ $? -eq 0 ]]; then
-	chmod +x 4k*amd64.deb
-	sudo apt install ./4k*amd64.deb -y
-	sudo rm -f 4k*amd64.deb
+		chmod +x 4k*amd64.deb
+		sudo apt install ./4k*amd64.deb -y
+		sudo rm -f 4k*amd64.deb
 	else
-	echo "4K Video Downloader install failed"
-	fi	
+		echo "4K Video Downloader install failed"
+	fi
 	echobanner "4k Video Downloader installer completed"
 }
-function INSTALL_MICROSOFT_FONTS {
+function INSTALL_MICROSOFT_FONTS() {
 	sleep 3
 	echobanner "Microsoft Truetype fonts install"
 	sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
 	echo -e "\e[31;43m***** Microsoft Fonts*****\e[0m"
 	echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
 	sudo apt-get install ttf-mscorefonts-installer -y
-	sudo fc-cache -f -v  
+	sudo fc-cache -f -v
 	echobanner "Microsoft Truetype fonts install completed"
 }
-function INSTALL_PFETCH {
+function INSTALL_PFETCH() {
 	sleep 3
 	echobanner "Pfetch installer "
 	wget https://github.com/dylanaraps/pfetch/archive/master.zip
@@ -317,99 +332,99 @@ function INSTALL_PFETCH {
 	ls -l /usr/local/bin/pfetch
 	echobanner "Pfetch installer completed"
 }
-function INSTALL_ADB_AND_FASTBOOT {
+function INSTALL_ADB_AND_FASTBOOT() {
 	sleep 3
 	echobanner "ADB and Fastboot installer "
 	sudo apt-get install android-tools-adb android-tools-fastboot -y
 	echobanner "ADB and Fastboot installer completed"
 }
-function ENABLE_FLATPAKS {
-	echobanner "Enabling flatpak support wherever possible " 
-	sudo apt update -y && sudo apt install flatpak -y 
+function ENABLE_FLATPAKS() {
+	echobanner "Enabling flatpak support wherever possible "
+	sudo apt update -y && sudo apt install flatpak -y
 	#sudo apt install gnome-software-plugin-flatpak -y
 	sudo apt update -y
 	sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-} 
-function INSTALL_GNOME_SOFTWARE {
-	echobanner "Enabling GNOME supported wherever possible" 
+}
+function INSTALL_GNOME_SOFTWARE() {
+	echobanner "Enabling GNOME supported wherever possible"
 	STR=$(XDG_CURRENT_DESKTOP)
 	SUB='GNOME'
 	if [[ "$STR" == *"$SUB"* ]]; then
-	  echo "It's there."
-	  sudo apt update -y 
-	  sudo apt install gnome-tweaks -y
-	  sudo apt install gnome-software-plugin-flatpak -y
-	  sudo apt update -y
+		echo "It's there."
+		sudo apt update -y
+		sudo apt install gnome-tweaks -y
+		sudo apt install gnome-software-plugin-flatpak -y
+		sudo apt update -y
 	fi
 	#sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 #----------------------Flatpaks installed are below-------------------------------------------
 
-function INSTALL_TELEGRAM {
-	echobanner "Installing Telegram flatpak" 
+function INSTALL_TELEGRAM() {
+	echobanner "Installing Telegram flatpak"
 	flatpak install flathub org.telegram.desktop -y
-	echobanner "Telegram flatpak installed" 
+	echobanner "Telegram flatpak installed"
 }
-function INSTALL_SIGNAL {
-	echobanner "Installing Signal flatpak" 
+function INSTALL_SIGNAL() {
+	echobanner "Installing Signal flatpak"
 	flatpak install flathub org.signal.Signal -y
-	echobanner "Signal flatpak installed" 
+	echobanner "Signal flatpak installed"
 }
-function INSTALL_TORBROWSER {
-	echobanner "Installing Tor-Browser flatpak" 
+function INSTALL_TORBROWSER() {
+	echobanner "Installing Tor-Browser flatpak"
 	flatpak install flathub com.github.micahflee.torbrowser-launcher -y
-	echobanner "Tor-Browser flatpak installed" 
+	echobanner "Tor-Browser flatpak installed"
 }
-function INSTALL_CELLULOID {
-	echobanner "Installing Celluloid flatpak" 
+function INSTALL_CELLULOID() {
+	echobanner "Installing Celluloid flatpak"
 	flatpak install flathub io.github.celluloid_player.Celluloid -y
-	echobanner "Celluloid flatpak installed" 
+	echobanner "Celluloid flatpak installed"
 }
-function INSTALL_BITWARDEN {
-	echobanner "Installing bitwarden flatpak" 
+function INSTALL_BITWARDEN() {
+	echobanner "Installing bitwarden flatpak"
 	flatpak install flathub com.bitwarden.desktop -y
-	echobanner "bitwarden flatpak installed" 
+	echobanner "bitwarden flatpak installed"
 }
-function INSTALL_KEEPASSXC {
-	echobanner "Installing KeepassXC flatpak" 
+function INSTALL_KEEPASSXC() {
+	echobanner "Installing KeepassXC flatpak"
 	flatpak install flathub org.keepassxc.KeePassXC -y
-	echobanner "KeepassXC flatpak installed" 
+	echobanner "KeepassXC flatpak installed"
 }
-function INSTALL_FOLIATE {
-	echobanner "Installing Foliate flatpak" 
+function INSTALL_FOLIATE() {
+	echobanner "Installing Foliate flatpak"
 	flatpak install flathub com.github.johnfactotum.Foliate -y
-	echobanner "Foliate flatpak installed" 
+	echobanner "Foliate flatpak installed"
 }
-function INSTALL_OKULAR {
-	echobanner "Installing Okular flatpak" 
+function INSTALL_OKULAR() {
+	echobanner "Installing Okular flatpak"
 	flatpak install flathub org.kde.okular -y
-	echobanner "Okular flatpak installed" 
+	echobanner "Okular flatpak installed"
 }
-function INSTALL_BOOKWORM {
-	echobanner "Installing Bookworm flatpak" 
+function INSTALL_BOOKWORM() {
+	echobanner "Installing Bookworm flatpak"
 	flatpak install flathub com.github.babluboy.bookworm -y
-	echobanner "Bookworm flatpak installed" 
+	echobanner "Bookworm flatpak installed"
 }
-function INSTALL_CHROMIUM {
-	echobanner "Installing Chromium flatpak" 
+function INSTALL_CHROMIUM() {
+	echobanner "Installing Chromium flatpak"
 	flatpak install flathub org.chromium.Chromium -y
-	echobanner "Chromium flatpak installed" 
+	echobanner "Chromium flatpak installed"
 }
 
-function INSTALL_KLAVARO {
-	echobanner "Installing Klavaro flatpak" 
+function INSTALL_KLAVARO() {
+	echobanner "Installing Klavaro flatpak"
 	flatpak install flathub net.sourceforge.Klavaro -y
-	echobanner "Klavaro flatpak installed" 
+	echobanner "Klavaro flatpak installed"
 }
 #******************************End of section contains individual software entries****************************************
 
-function REBOOT_SYSTEM {
+function REBOOT_SYSTEM() {
 	echobanner "Rebooting"
 	sleep 4
 	sudo reboot now
 	## End of script
 }
-function CREATE_FOLDER_SYSTEM {
+function CREATE_FOLDER_SYSTEM() {
 	echobanner "Creating a System of Folders"
 	sleep 4
 	cd /home/"$USERID"
@@ -424,13 +439,13 @@ function CREATE_FOLDER_SYSTEM {
 	mkdir Computers Miscellany Novels
 	cd /home/"$USERID"
 	cd Videos
-	mkdir Computorials Tutorials Movies 
+	mkdir Computorials Tutorials Movies
 	cd /home/"$USERID"
 	mkdir SharedVMFolder
 	sudo chown -R "$USERID":"$USERID" /home/"$USERID"
 	## End of script
 }
-function COPY_BASHRC_AND_DELETE_REST {
+function COPY_BASHRC_AND_DELETE_REST() {
 	sleep 3
 	echobanner "Copying the .bashrc files and deleting downloaded files"
 	cd ..
@@ -440,10 +455,10 @@ function COPY_BASHRC_AND_DELETE_REST {
 	sudo rm -rf ScriptDownloads
 
 }
-function INSTALL_ALL_APT_SOFTWARE {
+function INSTALL_ALL_APT_SOFTWARE() {
 	echobanner "Installing apt software"
 	mkdir ScriptDownloads
-	cd 	  ScriptDownloads
+	cd ScriptDownloads
 	INSTALL_BASIC_UTILITIES
 	INSTALL_VIRTUALBOX
 	INSTALL_NEOVIM
@@ -460,7 +475,7 @@ function INSTALL_ALL_APT_SOFTWARE {
 	#-------Issues with these two--------------#
 	#INSTALL_BRAVEBROWSER
 	#INSTALL_OPERABROWSER
-	INSTALL_VIVALDIBROWSER	
+	INSTALL_VIVALDIBROWSER
 	INSTALL_EDGEBROWSER
 	INSTALL_VSCODE
 	INSTALL_SUBLIMETEXT
@@ -474,10 +489,10 @@ function INSTALL_ALL_APT_SOFTWARE {
 	echobanner "Installing apt software donein real machines"
 	## End of script
 }
-function INSTALL_ALL_APT_SOFTWARE_VM {
+function INSTALL_ALL_APT_SOFTWARE_VM() {
 	echobanner "Installing apt software for VMs"
 	mkdir ScriptDownloads
-	cd 	  ScriptDownloads
+	cd ScriptDownloads
 	INSTALL_BASIC_UTILITIES
 	INSTALL_VBOX_GUESTADDITIONS
 	INSTALL_NEOVIM
@@ -496,7 +511,7 @@ function INSTALL_ALL_APT_SOFTWARE_VM {
 	echobanner "Installing apt software done in Virtual machines"
 	## End of script
 }
-function INSTALL_ALL_FLATPAK_SOFTWARE {
+function INSTALL_ALL_FLATPAK_SOFTWARE() {
 	echobanner "Installing flatpak software"
 	INSTALL_TELEGRAM
 	INSTALL_SIGNAL
@@ -512,36 +527,36 @@ function INSTALL_ALL_FLATPAK_SOFTWARE {
 	echobanner "Installing flatpak software done"
 	## End of script
 }
-function RESTORE_BROWSERS {
+function RESTORE_BROWSERS() {
 	echobanner "Restoring browser details"
 	unzip -o -d /home/"$USERID" MozillaArchive.zip
 	unzip -o -d /home/"$USERID"/.config ConfigArchive.zip
 	echobanner "Restore of browser details done"
 	## End of script
 }
-function FIRST_RUN_COMMON {
+function FIRST_RUN_COMMON() {
 	echobanner "Installing first run software"
 	WELCOME_SCREEN && FIRST_UPGRADE && ENABLE_FLATPAKS && REBOOT_SYSTEM
 	echobanner "Installing first run software done"
 	## End of script
 }
-function SECOND_RUN {
+function SECOND_RUN() {
 	echobanner "Installing Second run software"
 	if [ "$MACHINE_VIRTUAL_OR_REAL" != "$IS_VIRTUALBOX_MACHINE" ]; then
-	echo "This is an actual machine set-up"	
-    WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE && INSTALL_ALL_FLATPAK_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && RESTORE_BROWSERS && CREATE_FOLDER_SYSTEM && REBOOT_SYSTEM
+		echo "This is an actual machine set-up"
+		WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE && INSTALL_ALL_FLATPAK_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && RESTORE_BROWSERS && CREATE_FOLDER_SYSTEM && REBOOT_SYSTEM
 	else
-    echo "This is a virtualbox machine so installing only relevant software"
-    WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE_VM && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
-	fi		
-	
+		echo "This is a virtualbox machine so installing only relevant software"
+		WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE_VM && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+	fi
+
 	echobanner "Installing Second run software done"
 	## End of script
 }
-function INSTALL_BRAVE_OPERA_BROWSERS {
+function INSTALL_BRAVE_OPERA_BROWSERS() {
 	echobanner "Installing Brave and Opera Browsers Separately"
 	INSTALL_BRAVEBROWSER
-	INSTALL_OPERABROWSER	
+	INSTALL_OPERABROWSER
 	echobanner "Installing Brave and Opera Browsers done"
 	## End of script
 }
@@ -551,12 +566,5 @@ FIRST_RUN_COMMON
 
 ########################Run 2########################################
 
-SECOND_RUN 
+SECOND_RUN
 INSTALL_BRAVE_OPERA_BROWSERS
-
-
-
-
-
-
-
