@@ -197,6 +197,14 @@ function INSTALL_ATOM() {
 	sudo apt install atom -y
 	echobanner "Atom text Editor install completed"
 }
+function INSTALL_ULAUNCHER() {
+	sleep 3
+	echobanner "Ulauncher download and full install"
+	sudo add-apt-repository ppa:agornostal/ulauncher -y
+    sudo apt update -y
+	sudo apt install ulauncher -y
+	echobanner "Ulauncher install completed"
+}
 function INSTALL_UCARESYSTEMCORE() {
 	sleep 3
 	echobanner "uCareSystem Core download and full install"
@@ -481,6 +489,7 @@ function INSTALL_ALL_APT_SOFTWARE() {
 	INSTALL_VSCODIUM
 	INSTALL_ATOM
 	INSTALL_SUBLIMETEXT
+	INSTALL_ULAUNCHER
 	INSTALL_CALIBRE
 	INSTALL_4KVIDEODOWNLOADER
 	INSTALL_MICROSOFT_FONTS
