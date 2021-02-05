@@ -208,10 +208,6 @@ function INSTALL_ULAUNCHER() {
 function INSTALL_UCARESYSTEMCORE() {
 	sleep 3
 	echobanner "uCareSystem Core download and full install"
-	#uCareSystem installer
-	#_______________________________________________
-	# Name   : uCareSystem Core
-
 	sudo add-apt-repository ppa:utappia/stable -y
 	sudo apt update -y
 	sudo apt-get install ucaresystem-core -y
