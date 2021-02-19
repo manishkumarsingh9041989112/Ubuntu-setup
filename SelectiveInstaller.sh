@@ -336,6 +336,14 @@ function INSTALL_PFETCH() {
 	ls -l /usr/local/bin/pfetch
 	echobanner "Pfetch installer completed"
 }
+function INSTALL_AUDIORECORDER() {
+	sleep 3
+	echobanner "Audio Recorder installer "
+	sudo apt-add-repository ppa:audio-recorder/ppa -y
+    sudo apt update -y
+    sudo apt-get install audio-recorder -y
+	echobanner "Audio Recorder installer completed"
+}
 function INSTALL_ADB_AND_FASTBOOT() {
 	sleep 3
 	echobanner "ADB and Fastboot installer "
@@ -486,6 +494,7 @@ function INSTALL_ALL_APT_SOFTWARE() {
 	INSTALL_ATOM
 	INSTALL_SUBLIMETEXT
 	INSTALL_ULAUNCHER
+	INSTALL_AUDIORECORDER
 	INSTALL_CALIBRE
 	INSTALL_4KVIDEODOWNLOADER
 	INSTALL_MICROSOFT_FONTS
