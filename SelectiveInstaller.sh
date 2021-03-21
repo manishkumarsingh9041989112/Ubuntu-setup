@@ -599,7 +599,7 @@ function RESTORE_BROWSERS() {
 }
 function FIRST_RUN_COMMON() {
 	echobanner "Installing first run software"
-	WELCOME_SCREEN && FIRST_UPGRADE && ENABLE_FLATPAKS && REBOOT_SYSTEM
+	WELCOME_SCREEN && FIRST_UPGRADE && ENABLE_FLATPAKS 
 	echobanner "Installing first run software done"
 	## End of script
 }
@@ -607,10 +607,11 @@ function SECOND_RUN() {
 	echobanner "Installing Second run software"
 	if [ "$MACHINE_VIRTUAL_OR_REAL" != "$IS_VIRTUALBOX_MACHINE" ]; then
 		echo "This is an actual machine set-up"
-		WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE && INSTALL_ALL_FLATPAK_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && CREATE_FOLDER_SYSTEM && REBOOT_SYSTEM
+		WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE && INSTALL_ALL_FLATPAK_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && CREATE_FOLDER_SYSTEM  			
 	else
 		echo "This is a virtualbox machine so installing only relevant software"
-		WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE_VM && COPY_BASHRC_AND_DELETE_REST && REBOOT_SYSTEM
+		WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE_VM && COPY_BASHRC_AND_DELETE_REST
+		
 	fi
 
 	echobanner "Installing Second run software done"
@@ -625,10 +626,10 @@ function INSTALL_BRAVE_OPERA_BROWSERS() {
 	## End of script
 }
 ########################Run 1########################################
-
 FIRST_RUN_COMMON
+REBOOT_SYSTEM
 
 ########################Run 2########################################
-
 SECOND_RUN
+REBOOT_SYSTEM
 INSTALL_BRAVE_OPERA_BROWSERS
