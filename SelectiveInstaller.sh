@@ -25,6 +25,15 @@ USERID=devk
 IS_VIRTUALBOX_MACHINE="innotek GmbH"
 
 #----------------Functions----------------------------#
+function WAIT_FOR_SECONDS()
+{ 
+  echo "Now we will wait for $1 seconds before processing"
+  date=$((`date +%s` + $1));
+  while [ "$date" -ne `date +%s` ]; do
+    echo -ne "$(date -u --date @$(($date - `date +%s`)) +%H:%M:%S)\r";
+    sleep 1
+  done
+}
 
 function WELCOME_SCREEN() {
 	echo "_______________________________________________________"
@@ -66,7 +75,7 @@ function WELCOME_SCREEN() {
 	echo
 	echo " Selective Installer will start in 5 seconds..........."
 
-	sleep 6
+	WAIT_FOR_SECONDS 6
 }
 function echobanner() {
 	echo $1 >>textfile.txt
@@ -432,7 +441,7 @@ function INSTALL_KLAVARO() {
 
 function REBOOT_SYSTEM() {
 	echobanner "Rebooting"
-	sleep 4
+	WAIT_FOR_SECONDS 4
 	sudo reboot now
 	## End of script
 }
@@ -472,60 +481,60 @@ function INSTALL_ALL_APT_SOFTWARE() {
 	mkdir ScriptDownloads
 	cd ScriptDownloads
 	INSTALL_BASIC_UTILITIES
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_VIRTUALBOX
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_NEOVIM
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_GIT
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_REDSHIFT
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_QBITTORRENT
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_POWERLINEFONTS
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_MPV
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_VLC
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_UCARESYSTEMCORE
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_4KVIDEODOWNLOADER
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_GOOGLECHROME
-	sleep 20
+	WAIT_FOR_SECONDS 10
 	INSTALL_NORDVPN
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_VIVALDIBROWSER
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_EDGEBROWSER
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	#INSTALL_VSCODE
 	INSTALL_VSCODIUM
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_ATOM
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_SUBLIMETEXT
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_ULAUNCHER
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_AUDIORECORDER
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_CALIBRE
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_4KVIDEODOWNLOADER
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_MICROSOFT_FONTS
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_ADB_AND_FASTBOOT
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_PFETCH
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_VARIETY
-	sleep 10	
+	WAIT_FOR_SECONDS 5	
 	INSTALL_GNOME_SOFTWARE
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	echobanner "Installing apt software donein real machines"
 	## End of script
 }
@@ -534,61 +543,50 @@ function INSTALL_ALL_APT_SOFTWARE_VM() {
 	mkdir ScriptDownloads
 	cd ScriptDownloads
 	INSTALL_BASIC_UTILITIES
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_VBOX_GUESTADDITIONS
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_NEOVIM
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_CORRETTO_JDK11
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_GIT
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_REDSHIFT
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_POWERLINEFONTS
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_VLC
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_UCARESYSTEMCORE
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_GOOGLECHROME
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_NORDVPN
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	#INSTALL_BRAVEBROWSER
 	INSTALL_SUBLIMETEXT
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_MICROSOFT_FONTS
-	sleep 10
+	WAIT_FOR_SECONDS 5
 	INSTALL_PFETCH
-	sleep 10	
+	WAIT_FOR_SECONDS 5
 	echobanner "Installing apt software done in Virtual machines"
 	## End of script
 }
 function INSTALL_ALL_FLATPAK_SOFTWARE() {
 	echobanner "Installing flatpak software"
 	INSTALL_TELEGRAM
-	sleep 10
 	INSTALL_SIGNAL
-	sleep 10
 	INSTALL_TORBROWSER
-	sleep 10
 	INSTALL_CELLULOID
-	sleep 10
 	INSTALL_BITWARDEN
-	sleep 10
 	INSTALL_KEEPASSXC
-	sleep 10
 	INSTALL_FOLIATE
-	sleep 10
 	INSTALL_OKULAR
-	sleep 10
 	INSTALL_BOOKWORM
-	sleep 10
 	INSTALL_CHROMIUM
-	sleep 10
 	INSTALL_KLAVARO
-	sleep 10
 	echobanner "Installing flatpak software done"
 	## End of script
 }
@@ -621,9 +619,8 @@ function SECOND_RUN() {
 function INSTALL_BRAVE_OPERA_BROWSERS() {
 	echobanner "Installing Brave and Opera Browsers Separately"
 	INSTALL_BRAVEBROWSER
-	sleep 10
+	WAIT_FOR_SECONDS 10
 	INSTALL_OPERABROWSER
-	sleep 10
 	echobanner "Installing Brave and Opera Browsers done"
 	## End of script
 }
