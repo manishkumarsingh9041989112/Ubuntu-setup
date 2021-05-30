@@ -189,6 +189,12 @@ function INSTALL_VLC() {
 	sudo apt install vlc -y
 	echobanner "VLC install completed"
 }
+function INSTALL_TMUX() {
+	
+	echobanner "Tmux download and full install"
+	sudo apt install tmux -y
+	echobanner "Tmux install completed"
+}
 function INSTALL_VSCODIUM() {
 	
 	echobanner "VSCODIUM(FOSS version of VS Code) download and full install"
@@ -528,7 +534,8 @@ function INSTALL_ALL_APT_SOFTWARE() {
 	WAIT_FOR_SECONDS 2
 	INSTALL_VSCODIUM
 	WAIT_FOR_SECONDS 2
-	INSTALL_ATOM
+	#INSTALL_ATOM
+	INSTALL_TMUX
 	WAIT_FOR_SECONDS 2
 	INSTALL_SUBLIMETEXT
 	WAIT_FOR_SECONDS 2
@@ -546,11 +553,11 @@ function INSTALL_ALL_APT_SOFTWARE() {
 	WAIT_FOR_SECONDS 2
 	INSTALL_PFETCH
 	WAIT_FOR_SECONDS 2
-	INSTALL_VARIETY
+	#INSTALL_VARIETY
 	WAIT_FOR_SECONDS 2	
 	INSTALL_GNOME_SOFTWARE
 	WAIT_FOR_SECONDS 2
-	echobanner "Installing apt software donein real machines"
+	echobanner "Installing apt software done in real machines"
 	## End of script
 }
 function INSTALL_ALL_APT_SOFTWARE_VM() {
