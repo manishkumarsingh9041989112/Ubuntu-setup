@@ -450,7 +450,7 @@ function CREATE_FOLDER_SYSTEM() {
 	sleep 4
 	cd /home/"$USERID"
 	cd Documents
-	mkdir GitRepos Locker LogBoxer
+	mkdir GitRepos Locker LogBoxer CalibreLibraries
 	cd GitRepos
 	git clone https://github.com/manishkumarsingh9041989112/Ubuntusetup.git
 	cd /home/"$USERID"
@@ -462,7 +462,7 @@ function CREATE_FOLDER_SYSTEM() {
 	cd Videos
 	mkdir Computorials Tutorials Movies
 	cd /home/"$USERID"
-	mkdir SharedVMFolder
+	mkdir SharedVMFolder 
 	sudo chown -R "$USERID":"$USERID" /home/"$USERID"
 	## End of script
 }
