@@ -445,6 +445,11 @@ function INSTALL_KLAVARO() {
 	flatpak install flathub net.sourceforge.Klavaro -y
 	echobanner "Klavaro flatpak installed"
 }
+function INSTALL_LIBREWOLF() {
+	echobanner "Installing Librewolf flatpak"
+	flatpak install flathub io.gitlab.librewolf-community -y
+	echobanner "Librewolf flatpak installed"
+}
 #******************************End of section contains individual software entries****************************************
 
 function REBOOT_SYSTEM() {
@@ -597,6 +602,7 @@ function INSTALL_ALL_FLATPAK_SOFTWARE() {
 	INSTALL_BOOKWORM
 	INSTALL_CHROMIUM
 	INSTALL_KLAVARO
+	INSTALL_LIBREWOLF
 	echobanner "Installing flatpak software done"
 	## End of script
 }
