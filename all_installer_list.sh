@@ -454,9 +454,15 @@ function INSTALL_LIBREWOLF() {
 }
 function INSTALL_MIDORI() {
     echobanner "Installing Midori flatpak"
-    flatpak --system install flathub org.midori_browser.Midori
+    flatpak --system install flathub org.midori_browser.Midori -y
     echobanner "Midori flatpak installed"
 }
+function INSTALL_VIDEO_DOWNLOADER() {
+    echobanner "Installing Video Downloader flatpak"
+    flatpak --system install flathub com.github.unrud.VideoDownloader -y
+    echobanner "Video Downloader flatpak installed"
+}
+
 #******************************End of section contains individual software entries****************************************
 
 function REBOOT_SYSTEM() {
