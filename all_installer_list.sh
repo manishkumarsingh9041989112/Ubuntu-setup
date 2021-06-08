@@ -107,7 +107,7 @@ function FIRST_UPDATE() {
 
 }
 function KILL_PACKAGEKITD_PROCESS() {
-    ps aux  |  grep  "/usr/libexec/packagekitd"  |  awk '{print $2}'  |  xargs sudo kill -9
+    ps aux  |  grep  "/usr/libexec/packagekitd"  |  awk '{print $2}'  |  xargs sudo kill -9 || true
 }
 function CLEAN_UPDATE() {
     echobanner "The clean update taking place here"
