@@ -1,15 +1,21 @@
 #!/bin/bash
 set -e
-## shellcheck disable=2086
-true
-## shellcheck disable=1091
 source all_installer_list.sh
+check_root
 FIRST_RUN_COMMON && REBOOT_SYSTEM
 #Creating folder for temporary downloads#
+if [ -d "./ScriptDownloads" ] 
+then
+    echo "Directory ScriptDownloads exists.So,deleting it" 
+    sudo rm -rf ./ScriptDownloads
+else
+    echo "Directory ScriptDownloads does not exists, so all fine"
+fi
 mkdir ScriptDownloads
 cd ScriptDownloads
+KILL_PACKAGEKITD_PROCESS
 #Created#
-
+CLEAN_UPDATE
 #*****************Basics************************************#
 INSTALL_BASIC_UTILITIES
 INSTALL_UCARESYSTEMCORE
@@ -52,7 +58,7 @@ INSTALL_NORDVPN
 #INSTALL_VARIETY
 INSTALL_BITWARDEN #Flatpak
 INSTALL_KEEPASSXC #Flatpak
-INSTALL_GNOME_SOFTWARE
+#INSTALL_GNOME_SOFTWARE
 #*************Books************************************#
 INSTALL_CALIBRE
 #INSTALL_FOLIATE  #Flatpak
@@ -73,4 +79,6 @@ INSTALL_SIGNAL   #Flatpak
 #*******Final steps***************************************#
 COPY_BASHRC_AND_BASH_ALIASES
 CREATE_FOLDER_SYSTEM
+KILL_PACKAGEKITD_PROCESS
+CLEAN_UPDATE
 REBOOT_SYSTEM

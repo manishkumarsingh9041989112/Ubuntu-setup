@@ -106,6 +106,17 @@ function FIRST_UPDATE() {
     echobanner "The first update is now complete: and now going for software installs"
 
 }
+function KILL_PACKAGEKITD_PROCESS() {
+    ps aux  |  grep  "/usr/libexec/packagekitd"  |  awk '{print $2}'  |  xargs sudo kill -9
+}
+function CLEAN_UPDATE() {
+    echobanner "The clean update taking place here"
+    sudo rm -rf /var/lib/apt/lists/partial
+    sudo apt-get update -o Acquire::CompressionTypes::Order::=gz
+    sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y
+    echobanner "The clean update is now complete: and now going for software installs"
+
+}
 function INSTALL_BASIC_UTILITIES() {
     echobanner "Basic utilities installation"
     sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip -y
