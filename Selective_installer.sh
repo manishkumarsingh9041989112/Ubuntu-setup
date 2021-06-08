@@ -30,9 +30,7 @@ INSTALL_PFETCH
 KILL_PACKAGEKITD_PROCESS
 #************Virtualbox********************************#
 if [ "$MACHINE_VIRTUAL_OR_REAL" != "$IS_VIRTUALBOX_MACHINE" ]; then
-    INSTALL_VIRTUALBOX
-else
-    INSTALL_VBOX_GUESTADDITIONS
+    INSTALL_LATEST_VIRTUALBOX
 fi
 KILL_PACKAGEKITD_PROCESS
 #******************Browsers********************************#

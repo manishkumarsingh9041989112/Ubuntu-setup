@@ -124,6 +124,21 @@ function INSTALL_BASIC_UTILITIES() {
 
 }
 #******************************The section contains individual software entries****************************************
+function INSTALL_LATEST_VIRTUALBOX() {
+    echobanner "Latest Virtualbox download and full install"
+    sudo apt-get remove virtualbox -y || true
+    sudo apt-get autoremove -y
+    UBUNTU_CODENAME=$(lsb_release -c|awk '{print $2}')
+    sudo touch /etc/apt/sources.list.d/virtualbox.list
+    sudo echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian ${UBUNTU_CODENAME} contrib" | sudo tee --append /etc/apt/sources.list.d/virtualbox.list
+    wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+    sudo apt-get update -y
+    sudo apt-get install virtualbox-6.1 dkms -y
+    vboxversion=$(wget -qO - https://download.virtualbox.org/virtualbox/LATEST.TXT)
+    wget "https://download.virtualbox.org/virtualbox/${vboxversion}/Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack"
+    sudo vboxmanage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack
+    echobanner "Latest Virtualbox install completed"
+}
 function INSTALL_VBOX_GUESTADDITIONS() {
     sleep 4
     echobanner "VirtualBox guest additions download and full install"
