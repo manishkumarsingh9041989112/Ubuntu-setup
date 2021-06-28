@@ -405,7 +405,7 @@ function ENABLE_FLATPAKS() {
 }
 function INSTALL_GNOME_SOFTWARE() {
     echobanner "Enabling GNOME supported wherever possible"
-    STR=$(XDG_CURRENT_DESKTOP)
+    STR="$XDG_CURRENT_DESKTOP"
     SUB='GNOME'
     if [[ "$STR" == *"$SUB"* ]]; then
         echo "It's there."
