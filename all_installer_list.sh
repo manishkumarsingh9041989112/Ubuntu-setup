@@ -172,6 +172,33 @@ function INSTALL_GOGH_THEMES() {
     sudo rm -rf Gogh
 	echobanner "Installing Gogh tool and themes done"
 }
+function INSTALL_DRACULA_GNOME_TERMINAL() {
+    # Gnome-terminal Dracula theme install
+    sudo apt-get install dconf-cli -y
+    git clone https://github.com/dracula/gnome-terminal
+    cd gnome-terminal/
+    ./install.sh
+    cd ..
+   
+}
+function INSTALL_DRACULA_GEDIT() {
+    wget https://raw.githubusercontent.com/dracula/gedit/master/dracula.xml
+    FILE=/home/"$USERID"/.local/share/gedit/styles
+    if [ ! -f "$FILE" ]; then
+        mkdir "$FILE" && true
+    fi
+    sudo mv dracula.xml "$FILE"/
+    
+}
+function INSTALL_DRACULA_GTK_THEME() {
+
+    wget https://github.com/dracula/gtk/archive/master.zip
+    unzip master.zip
+    sudo mv -f gtk-master /usr/share/themes && true
+    gsettings set org.gnome.desktop.interface gtk-theme "Dracula"
+    gsettings set org.gnome.desktop.wm.preferences theme "Dracula"
+    sudo rm -rf gtk-master.zip
+}
 function INSTALL_LATEST_VIRTUALBOX() {
     echobanner "Latest Virtualbox download and full install"
     sudo apt-get remove virtualbox -y || true
@@ -186,19 +213,6 @@ function INSTALL_LATEST_VIRTUALBOX() {
     wget "https://download.virtualbox.org/virtualbox/${vboxversion}/Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack"
     sudo vboxmanage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack
     echobanner "Latest Virtualbox install completed"
-}
-function INSTALL_VBOX_GUESTADDITIONS() {
-    sleep 4
-    echobanner "VirtualBox guest additions download and full install"
-    sudo apt install virtualbox-guest-additions-iso -y
-    echobanner "VirtualBox guest additions install completed"
-}
-function INSTALL_VIRTUALBOX() {
-    sleep 4
-    echobanner "VirtualBox download and full install"
-    sudo apt install virtualbox -y
-    INSTALL_VBOX_GUESTADDITIONS
-    echobanner "VirtualBox install completed"
 }
 function INSTALL_CORRETTO_JDK11() {
     sleep 4
