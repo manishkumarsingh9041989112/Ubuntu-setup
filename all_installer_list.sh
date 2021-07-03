@@ -124,6 +124,7 @@ function INSTALL_BASIC_UTILITIES() {
     echobanner "Basic utilities installation"
     sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git -y
     sudo apt-get install dconf-cli uuid-runtime -y
+    sudo apt-get --yes install unace rar p7zip zip sharutils uudeview mpack lha arj cabextract file-roller
     sudo apt install build-essential dkms linux-headers-$(uname -r) -y
 
 }
@@ -728,13 +729,5 @@ function INSTALL_BRAVE_OPERA_BROWSERS() {
     WAIT_FOR_SECONDS 10
     INSTALL_OPERABROWSER
     echobanner "Installing Brave and Opera Browsers done"
-    ## End of script
-}
-function INSTALL_PAPIRUS_ICON_THEME() {
-    echobanner "Installing Papirus icon theme"
-    sudo add-apt-repository -y ppa:papirus/papirus
-	sudo apt install -y papirus-icon-theme
-	gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
-    echobanner "Installing Papirus icon theme done"
     ## End of script
 }
