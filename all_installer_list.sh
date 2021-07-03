@@ -18,6 +18,7 @@ DATE=(date +%F_%T)
 SCRIPT_VERSION=(0)
 MACHINE_VIRTUAL_OR_REAL=$(sudo dmidecode -s system-manufacturer)
 USERID=devk
+PRESENTHOME=/home/"$USERID"
 
 #----------------Constants-----------------------------#
 IS_VIRTUALBOX_MACHINE="innotek GmbH"
@@ -93,6 +94,8 @@ function echobanner() {
 }
 function FIRST_UPGRADE() {
     echobanner "The first upgrade taking place here"
+    sudo systemctl disable apt-daily-upgrade.timer
+    sudo systemctl disable apt-daily.timer
     sudo add-apt-repository universe -y
     sudo add-apt-repository multiverse -y
     sudo add-apt-repository restricted -y
@@ -119,11 +122,56 @@ function CLEAN_UPDATE() {
 }
 function INSTALL_BASIC_UTILITIES() {
     echobanner "Basic utilities installation"
-    sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip -y
+    sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git -y
+    sudo apt-get install dconf-cli uuid-runtime -y
     sudo apt install build-essential dkms linux-headers-$(uname -r) -y
 
 }
 #******************************The section contains individual software entries****************************************
+function INSTALL_PAPIRUS_ICON_THEME() {
+    echobanner "Installing Papirus icon theme"
+    sudo add-apt-repository -y ppa:papirus/papirus
+	sudo apt install -y papirus-icon-theme
+	gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+    echobanner "Installing Papirus icon theme done"
+}
+function INSTALL_GOGH_THEMES() {
+	echobanner "Installing Gogh tool and themes"
+	# clone the repo into "$PRESENTHOME/src/gogh"
+	mkdir -p "$PRESENTHOME/src"
+	cd "$PRESENTHOME/src"
+	git clone https://github.com/Mayccoll/Gogh.git gogh
+	cd gogh/themes
+	sudo chmod +x *.sh
+	# necessary on ubuntu
+	export TERMINAL=gnome-terminal
+	# install themes
+	./afterglow.sh
+	./alien-blood.sh
+	./argonaut.sh
+	./ayu-dark.sh
+	./ayu-mirage.sh
+	./azu.sh
+	./blazer.sh
+	./broadcast.sh
+	./brogrammer.sh
+	./cai.sh
+	./chalk.sh
+	./chalkboard.sh
+	./dark-pastel.sh
+	./darkside.sh
+	./dehydration.sh
+	./desert.sh
+	./dimmed-monokai.sh
+	./dracula.sh
+	./earthsong.sh
+	./elemental.sh
+	./elementary.sh
+	./sea-shells.sh
+    cd ../../
+    sudo rm -rf Gogh
+	echobanner "Installing Gogh tool and themes done"
+}
 function INSTALL_LATEST_VIRTUALBOX() {
     echobanner "Latest Virtualbox download and full install"
     sudo apt-get remove virtualbox -y || true
@@ -175,12 +223,6 @@ function INSTALL_VARIETY() {
     echobanner "Variety download and full install"
     sudo apt install variety -y
     echobanner "Variety install completed"
-}
-function INSTALL_GIT() {
-
-    echobanner "Git download and full install"
-    sudo apt install git -y
-    echobanner "Git install completed"
 }
 function INSTALL_REDSHIFT() {
 
@@ -646,16 +688,9 @@ function INSTALL_ALL_FLATPAK_SOFTWARE() {
     echobanner "Installing flatpak software done"
     ## End of script
 }
-function RESTORE_BROWSERS() {
-    echobanner "Restoring browser details"
-    unzip -o -d /home/"$USERID" MozillaArchive.zip
-    unzip -o -d /home/"$USERID"/.config ConfigArchive.zip
-    echobanner "Restore of browser details done"
-    ## End of script
-}
 function FIRST_RUN_COMMON() {
     echobanner "Installing first run software"
-    WELCOME_SCREEN && FIRST_UPGRADE && ENABLE_FLATPAKS
+    CLEAN_UPDATE && FIRST_UPGRADE && FIRST_UPGRADE && ENABLE_FLATPAKS
     echobanner "Installing first run software done"
     ## End of script
 }
@@ -679,5 +714,13 @@ function INSTALL_BRAVE_OPERA_BROWSERS() {
     WAIT_FOR_SECONDS 10
     INSTALL_OPERABROWSER
     echobanner "Installing Brave and Opera Browsers done"
+    ## End of script
+}
+function INSTALL_PAPIRUS_ICON_THEME() {
+    echobanner "Installing Papirus icon theme"
+    sudo add-apt-repository -y ppa:papirus/papirus
+	sudo apt install -y papirus-icon-theme
+	gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+    echobanner "Installing Papirus icon theme done"
     ## End of script
 }

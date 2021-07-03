@@ -2,7 +2,7 @@
 set -e
 source all_installer_list.sh
 check_root
-FIRST_RUN_COMMON && REBOOT_SYSTEM
+FIRST_RUN_COMMON && INSTALL_PAPIRUS_ICON_THEME && INSTALL_GOGH_THEMES && REBOOT_SYSTEM
 #Creating folder for temporary downloads#
 if [ -d "./ScriptDownloads" ] 
 then
