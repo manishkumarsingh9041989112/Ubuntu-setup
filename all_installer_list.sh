@@ -212,7 +212,7 @@ function INSTALL_LATEST_VIRTUALBOX() {
     sudo apt-get install virtualbox-6.1 dkms -y
     vboxversion=$(wget -qO - https://download.virtualbox.org/virtualbox/LATEST.TXT)
     wget "https://download.virtualbox.org/virtualbox/${vboxversion}/Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack"
-    sudo vboxmanage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack
+    sudo vboxmanage extpack install --replace --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack
     echobanner "Latest Virtualbox install completed"
 }
 function INSTALL_CORRETTO_JDK11() {
