@@ -336,6 +336,17 @@ function INSTALL_GOOGLECHROME() {
     sudo apt install ./google-chrome-stable_current_amd64.deb -y
     echobanner "Google Chrome completed"
 }
+function INSTALL_WATERFOX() {
+    sleep 4
+    echobanner "Waterfox download and full install"
+    UBUNTU_VERSION=$(cat /etc/os-release|grep VERSION_ID| cut -d'"' -f 2)
+    echo "deb http://download.opensuse.org/repositories/home:/hawkeye116477:/waterfox/xUbuntu_$UBUNTU_VERSION/ /" | sudo tee /etc/apt/sources.list.d/home:hawkeye116477:waterfox.list
+    urlreleasekey=https://download.opensuse.org/repositories/home:hawkeye116477:waterfox/xUbuntu_$UBUNTU_VERSION/Release.key
+    curl -fsSL https://download.opensuse.org/repositories/home:hawkeye116477:waterfox/xUbuntu_21.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_hawkeye116477_waterfox.gpg > /dev/null
+    sudo apt update -y
+    sudo apt install waterfox-g3-kpe -y
+    echobanner "Waterfox completed"
+}
 function INSTALL_NORDVPN() {
 
     echobanner "NordVPN download and base install"
