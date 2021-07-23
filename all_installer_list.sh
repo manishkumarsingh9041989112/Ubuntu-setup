@@ -471,6 +471,41 @@ function ENABLE_FLATPAKS() {
     sudo apt update -y
     sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
+function INSTALL_OPENSNITCH {
+    sleep 4
+    echo "Opensnitch download and full install"
+    versionnum=`curl -s https://github.com/evilsocket/opensnitch/releases/ | grep tag_name | sort -r|awk 'FNR == 1'|grep -P -o '(?<=tag_name=v).*?(?=\&)'`;
+    if [[ $versionnum == *-* ]]
+    then
+    target1=`echo $versionnum| cut -d '-' -f1`;
+    target2=`echo $versionnum| cut -d '-' -f2|sed 's/\.//'`;
+    target="$target1"."$target2"
+    else
+            target="$target1"        
+    fi
+    echo $versionnum ;echo $target
+    wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/opensnitch_$target-1_amd64.deb;
+    wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/python3-opensnitch-ui_$target-1_all.deb;
+    sudo dpkg -i opensnitch*.deb python3-opensnitch-ui*.deb; 
+    sudo apt -f  -y install;
+    sudo rm -rf *github.com
+    sudo rm opensnitch*.deb python3-opensnitch-ui*.deb;
+    echo "Opensnitch completed";
+}
+function INSTALL_BLEACHBIT {
+    sleep 4
+    echo "Bleachbit download and full install"
+    wget -o ./urls.txt --spider -r  --no-verbose --no-parent https://www.bleachbit.org/download/linux
+    bleachbiturl=$(cat urls.txt | awk '{print $3}'|sed -e 's/URL://'|grep '.deb$'|grep 'ubuntu'| sort -nr|awk 'FNR == 1')
+    firefox --browser "$bleachbiturl"
+    sleep 30
+    rm urls.txt
+    rm -rf www.bleachbit.org
+    cd /home/devk/Downloads
+    sudo apt install -y ./bleachbit*.deb
+    rm bleachbit*.deb    
+    echo "Bleachbit completed";
+}
 function INSTALL_GNOME_SOFTWARE() {
     echobanner "Enabling GNOME supported wherever possible"
     STR="$XDG_CURRENT_DESKTOP"
