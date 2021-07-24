@@ -2,7 +2,7 @@
 set -e
 source all_installer_list.sh
 check_root
-SHUT_UNATTENDED_UPGRADES && && ENABLE_FLATPAKS
+SHUT_UNATTENDED_UPGRADES && ENABLE_FLATPAKS
 #CLEAN_UPDATE  && REBOOT_SYSTEM
 #Creating folder for temporary downloads#
 if [ -d "./ScriptDownloads" ] 
