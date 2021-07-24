@@ -112,6 +112,9 @@ function FIRST_UPDATE() {
 function KILL_PACKAGEKITD_PROCESS() {
     ps aux  |  grep  "/usr/libexec/packagekitd"  |  awk '{print $2}'  |  xargs sudo kill -9 || true
 }
+function SHUT_UNATTENDED_UPGRADES() {
+    sudo apt remove unattended-upgrades -y
+}
 function CLEAN_UPDATE() {
     echobanner "The clean update taking place here"
     sudo rm -rf /var/lib/apt/lists/partial
@@ -458,6 +461,12 @@ function INSTALL_AUDIORECORDER() {
     sudo apt-get install audio-recorder -y
     echobanner "Audio Recorder installer completed"
 }
+function INSTALL_FIRETOOLS() {
+
+    echobanner "Firetools installer "
+    sudo apt-get install firetools -y
+    echobanner "Firetools installer completed"
+}
 function INSTALL_ADB_AND_FASTBOOT() {
 
     echobanner "ADB and Fastboot installer "
@@ -486,6 +495,7 @@ function INSTALL_OPENSNITCH {
     echo $versionnum ;echo $target
     wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/opensnitch_$target-1_amd64.deb;
     wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/python3-opensnitch-ui_$target-1_all.deb;
+    sudo chmod +x *.deb
     sudo dpkg -i opensnitch*.deb python3-opensnitch-ui*.deb; 
     sudo apt -f  -y install;
     sudo rm -rf *github.com
@@ -506,6 +516,7 @@ function INSTALL_BLEACHBIT {
     rm bleachbit*.deb    
     echo "Bleachbit completed";
 }
+
 function INSTALL_GNOME_SOFTWARE() {
     echobanner "Enabling GNOME supported wherever possible"
     STR="$XDG_CURRENT_DESKTOP"
@@ -517,7 +528,14 @@ function INSTALL_GNOME_SOFTWARE() {
         sudo apt install gnome-software-plugin-flatpak -y
         sudo apt update -y
     fi
-    #sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+   
+}
+function INSTALL_SMPLAYER() {
+    echobanner "Installing SMPlayer"
+    sudo add-apt-repository -y ppa:rvm/smplayer 
+    sudo apt-get update -y
+    sudo apt-get install smplayer smplayer-themes smplayer-skins -y
+    echobanner "Installing SMPlayer done"
 }
 #----------------------Flatpaks installed are below-------------------------------------------
 
