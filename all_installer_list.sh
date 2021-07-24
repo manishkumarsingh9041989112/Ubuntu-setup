@@ -497,7 +497,7 @@ function INSTALL_OPENSNITCH {
     wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/python3-opensnitch-ui_$target-1_all.deb;
     sudo chmod +x *.deb
     sudo dpkg -i opensnitch*.deb python3-opensnitch-ui*.deb; 
-    sudo apt -f  -y install;
+    sudo apt -f install -y;
     sudo rm -rf *github.com
     sudo rm opensnitch*.deb python3-opensnitch-ui*.deb;
     echo "Opensnitch completed";
