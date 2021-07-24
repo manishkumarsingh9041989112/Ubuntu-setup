@@ -2,7 +2,8 @@
 set -e
 source all_installer_list.sh
 check_root
-SHUT_UNATTENDED_UPGRADES && CLEAN_UPDATE && ENABLE_FLATPAKS && REBOOT_SYSTEM
+SHUT_UNATTENDED_UPGRADES && && ENABLE_FLATPAKS
+#CLEAN_UPDATE  && REBOOT_SYSTEM
 #Creating folder for temporary downloads#
 if [ -d "./ScriptDownloads" ] 
 then
@@ -66,7 +67,7 @@ INSTALL_CALIBRE
 
 #************Media*****************************************#
 INSTALL_MPV
-INSTALL_SMPLAYER
+#INSTALL_SMPLAYER
 INSTALL_VLC
 INSTALL_4KVIDEODOWNLOADER
 INSTALL_VIDEO_DOWNLOADER
