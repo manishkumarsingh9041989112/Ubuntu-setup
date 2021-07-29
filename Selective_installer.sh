@@ -27,6 +27,7 @@ INSTALL_MICROSOFT_FONTS
 INSTALL_PFETCH
 #************Virtualbox********************************#
 INSTALL_LATEST_VIRTUALBOX
+INSTALL_VERACRYPT
 #******************Browsers********************************#
 
 INSTALL_GOOGLECHROME

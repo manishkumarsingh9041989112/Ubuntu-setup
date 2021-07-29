@@ -537,6 +537,13 @@ function INSTALL_SMPLAYER() {
     sudo apt-get install smplayer smplayer-themes smplayer-skins -y
     echobanner "Installing SMPlayer done"
 }
+function INSTALL_VERACRYPT() {
+    echobanner "Installing VeraCrypt"
+    sudo add-apt-repository -y ppa:unit193/encryption
+    sudo apt-get update -y
+    sudo apt-get install veracrypt -y
+    echobanner "Installing VeraCrypt done"
+}
 #----------------------Flatpaks installed are below-------------------------------------------
 
 function INSTALL_TELEGRAM() {
