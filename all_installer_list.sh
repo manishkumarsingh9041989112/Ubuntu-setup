@@ -127,7 +127,7 @@ function INSTALL_BASIC_UTILITIES() {
     echobanner "Basic utilities installation"
     sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git -y
     sudo apt-get install dconf-cli uuid-runtime -y
-    sudo apt-get --yes install unace rar p7zip zip sharutils uudeview mpack lha arj cabextract file-roller
+    sudo apt-get --yes install unace rar p7zip zip cabextract file-roller
     sudo apt install build-essential dkms linux-headers-$(uname -r) -y
 
 }
@@ -316,7 +316,7 @@ function INSTALL_UCARESYSTEMCORE() {
     echobanner "uCareSystem Core download and full install"
     sudo add-apt-repository ppa:utappia/stable -y
     sudo apt update -y
-    sudo apt-get install ucaresystem-core -y
+    sudo apt install ucaresystem-core -y
     echobanner "uCareSystem Core install completed"
 }
 function INSTALL_4KVIDEODOWNLOADER() {
@@ -500,6 +500,7 @@ function INSTALL_OPENSNITCH {
     sudo apt -f install -y;
     sudo rm -rf *github.com
     sudo rm opensnitch*.deb python3-opensnitch-ui*.deb;
+    sudo apt --fix-broken install
     echo "Opensnitch completed";
 }
 function INSTALL_BLEACHBIT {
