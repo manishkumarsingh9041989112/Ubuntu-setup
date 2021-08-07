@@ -268,7 +268,7 @@ function INSTALL_UCARESYSTEMCORE() {
 function INSTALL_4KVIDEODOWNLOADER() {
 
     echobanner "4k Video Downloader installer might need version"
-    wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
+    wget https://dl.4kdownload.com/app/4kvideodownloader_4.17.1-1_amd64.deb
     if [[ $? -eq 0 ]]; then
         chmod +x 4k*amd64.deb
         sudo apt install ./4k*amd64.deb -y
@@ -584,7 +584,6 @@ function CREATE_FOLDER_SYSTEM() {
 function COPY_BASHRC_AND_BASH_ALIASES() {
 
     echobanner "Copying the .bashrc files and deleting downloaded files"
-    cd ..
     sudo cp ".bashrc" /home/"$USERID"/
     sudo cp ".bash_aliases" /home/"$USERID"/
     sudo chown -R "$USERID":"$USERID" /home/"$USERID"
@@ -592,8 +591,6 @@ function COPY_BASHRC_AND_BASH_ALIASES() {
 }
 function INSTALL_ALL_APT_SOFTWARE() {
     echobanner "Installing apt software"
-    mkdir ScriptDownloads
-    cd ScriptDownloads
     INSTALL_BASIC_UTILITIES
     WAIT_FOR_SECONDS 2
     INSTALL_VIRTUALBOX
@@ -655,8 +652,6 @@ function INSTALL_ALL_APT_SOFTWARE() {
 }
 function INSTALL_ALL_APT_SOFTWARE_VM() {
     echobanner "Installing apt software for VMs"
-    mkdir ScriptDownloads
-    cd ScriptDownloads
     INSTALL_BASIC_UTILITIES
     WAIT_FOR_SECONDS 2
     INSTALL_VBOX_GUESTADDITIONS
@@ -708,7 +703,7 @@ function INSTALL_ALL_FLATPAK_SOFTWARE() {
 }
 function FIRST_RUN_COMMON() {
     echobanner "Installing first run software"
-    CLEAN_UPDATE && FIRST_UPGRADE && FIRST_UPGRADE && ENABLE_FLATPAKS
+    CLEAN_UPDATE && FIRST_UPGRADE && ENABLE_FLATPAKS
     echobanner "Installing first run software done"
     ## End of script
 }
