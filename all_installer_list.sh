@@ -148,12 +148,45 @@ function INSTALL_DRACULA_GTK_THEME() {
     gsettings set org.gnome.desktop.wm.preferences theme "Dracula"
     sudo rm -rf gtk-master.zip
 }
+function INSTALL_UCARESYSTEMCORE() {
+
+    echobanner "uCareSystem Core download and full install"
+    sudo add-apt-repository ppa:utappia/stable -y
+    sudo apt update -y
+    sudo apt install ucaresystem-core -y
+    echobanner "uCareSystem Core install completed"
+}
+function INSTALL_POWERLINEFONTS() {
+
+    echobanner "Powerline fonts download and full install"
+    sudo apt install fonts-powerline -y
+    echobanner "Powerline fonts install completed"
+}
+function INSTALL_MICROSOFT_FONTS() {
+
+    echobanner "Microsoft Truetype fonts install"
+    sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
+    echo -e "\e[31;43m***** Microsoft Fonts*****\e[0m"
+    echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+    sudo apt-get install ttf-mscorefonts-installer -y
+    sudo fc-cache -f -v
+    echobanner "Microsoft Truetype fonts install completed"
+}
+function INSTALL_PFETCH() {
+
+    echobanner "Pfetch installer "
+    wget https://github.com/dylanaraps/pfetch/archive/master.zip
+    unzip master.zip
+    sudo install pfetch-master/pfetch /usr/local/bin/
+    ls -l /usr/local/bin/pfetch
+    echobanner "Pfetch installer completed"
+}
 function INSTALL_LATEST_VIRTUALBOX() {
     echobanner "Latest Virtualbox download and full install"
     sudo apt-get remove virtualbox -y || true
     sudo apt-get autoremove -y
     UBUNTU_CODENAME=$(lsb_release -c | awk '{print $2}')
-    sudo rm /etc/apt/sources.list.d/virtualbox.list
+    sudo rm /etc/apt/sources.list.d/virtualbox.list && true
     sudo touch /etc/apt/sources.list.d/virtualbox.list
     sudo echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian ${UBUNTU_CODENAME} contrib" | sudo tee --append /etc/apt/sources.list.d/virtualbox.list
     wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
@@ -199,12 +232,6 @@ function INSTALL_QBITTORRENT() {
     echobanner "Qbittorrent download and full install"
     sudo apt install qbittorrent -y
     echobanner "Qbittorrent install completed"
-}
-function INSTALL_POWERLINEFONTS() {
-
-    echobanner "Powerline fonts download and full install"
-    sudo apt install fonts-powerline -y
-    echobanner "Powerline fonts install completed"
 }
 function INSTALL_MPV() {
 
@@ -257,14 +284,6 @@ function INSTALL_BPYTOP() {
     sudo apt update -y && sudo apt install bpytop -y
     echobanner "Bpytop install completed"
 }
-function INSTALL_UCARESYSTEMCORE() {
-
-    echobanner "uCareSystem Core download and full install"
-    sudo add-apt-repository ppa:utappia/stable -y
-    sudo apt update -y
-    sudo apt install ucaresystem-core -y
-    echobanner "uCareSystem Core install completed"
-}
 function INSTALL_4KVIDEODOWNLOADER() {
 
     echobanner "4k Video Downloader installer might need version"
@@ -295,15 +314,6 @@ function INSTALL_WATERFOX() {
     sudo apt update -y
     sudo apt install waterfox-g3-kpe -y
     echobanner "Waterfox completed"
-}
-function INSTALL_NORDVPN() {
-
-    echobanner "NordVPN download and base install"
-    wget https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb
-    sudo apt install ./nordvpn-release_1.0.0_all.deb -y
-    sudo apt update -y
-    sudo apt install nordvpn -y
-    echobanner "NordVPN download and base install done"
 }
 function INSTALL_BRAVEBROWSER() {
 
@@ -342,6 +352,15 @@ function INSTALL_EDGEBROWSER() {
     sudo apt install microsoft-edge-dev -y
     echobanner "microsoft-edge-dev-browser install completed"
 }
+function INSTALL_NORDVPN() {
+
+    echobanner "NordVPN download and base install"
+    wget https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb
+    sudo apt install ./nordvpn-release_1.0.0_all.deb -y
+    sudo apt update -y
+    sudo apt install nordvpn -y
+    echobanner "NordVPN download and base install done"
+}
 function INSTALL_VSCODE() {
 
     echobanner "VSCode install"
@@ -366,25 +385,6 @@ function INSTALL_CALIBRE() {
     echobanner "Calibre Ebook manager installer"
     sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
     echobanner "Calibre Ebook manager installer completed"
-}
-function INSTALL_MICROSOFT_FONTS() {
-
-    echobanner "Microsoft Truetype fonts install"
-    sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y
-    echo -e "\e[31;43m***** Microsoft Fonts*****\e[0m"
-    echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
-    sudo apt-get install ttf-mscorefonts-installer -y
-    sudo fc-cache -f -v
-    echobanner "Microsoft Truetype fonts install completed"
-}
-function INSTALL_PFETCH() {
-
-    echobanner "Pfetch installer "
-    wget https://github.com/dylanaraps/pfetch/archive/master.zip
-    unzip master.zip
-    sudo install pfetch-master/pfetch /usr/local/bin/
-    ls -l /usr/local/bin/pfetch
-    echobanner "Pfetch installer completed"
 }
 function INSTALL_AUDIORECORDER() {
 
@@ -449,27 +449,6 @@ function INSTALL_BLEACHBIT {
     sudo apt install -y ./bleachbit*.deb
     rm bleachbit*.deb
     echo "Bleachbit completed"
-}
-
-function INSTALL_GNOME_SOFTWARE() {
-    echobanner "Enabling GNOME supported wherever possible"
-    STR="$XDG_CURRENT_DESKTOP"
-    SUB='GNOME'
-    if [[ "$STR" == *"$SUB"* ]]; then
-        echo "It's there."
-        sudo apt update -y
-        sudo apt install gnome-tweaks -y
-        sudo apt install gnome-software-plugin-flatpak -y
-        sudo apt update -y
-    fi
-
-}
-function INSTALL_SMPLAYER() {
-    echobanner "Installing SMPlayer"
-    sudo add-apt-repository -y ppa:rvm/smplayer
-    sudo apt-get update -y
-    sudo apt-get install smplayer smplayer-themes smplayer-skins -y
-    echobanner "Installing SMPlayer done"
 }
 function INSTALL_VERACRYPT() {
     echobanner "Installing VeraCrypt"
@@ -559,10 +538,17 @@ function REBOOT_SYSTEM() {
     sudo reboot now
     ## End of script
 }
+function COPY_BASHRC_AND_BASH_ALIASES() {
+
+    echobanner "Copying the .bashrc files and deleting downloaded files"
+    sudo cp ".bashrc" /home/"$USERID"/
+    sudo cp ".bash_aliases" /home/"$USERID"/
+    sudo chown -R "$USERID":"$USERID" /home/"$USERID"
+
+}
 function CREATE_FOLDER_SYSTEM() {
     echobanner "Creating a System of Folders"
     sleep 4
-    sudo rm -rf ScriptDownloads
     cd /home/"$USERID"
     cd Documents
     mkdir GitRepos Locker LogBoxer CalibreLibraries
@@ -581,151 +567,5 @@ function CREATE_FOLDER_SYSTEM() {
     sudo chown -R "$USERID":"$USERID" /home/"$USERID"
     ## End of script
 }
-function COPY_BASHRC_AND_BASH_ALIASES() {
 
-    echobanner "Copying the .bashrc files and deleting downloaded files"
-    sudo cp ".bashrc" /home/"$USERID"/
-    sudo cp ".bash_aliases" /home/"$USERID"/
-    sudo chown -R "$USERID":"$USERID" /home/"$USERID"
 
-}
-function INSTALL_ALL_APT_SOFTWARE() {
-    echobanner "Installing apt software"
-    INSTALL_BASIC_UTILITIES
-    WAIT_FOR_SECONDS 2
-    INSTALL_VIRTUALBOX
-    WAIT_FOR_SECONDS 2
-    INSTALL_NEOVIM
-    WAIT_FOR_SECONDS 2
-    INSTALL_REDSHIFT
-    WAIT_FOR_SECONDS 2
-    INSTALL_QBITTORRENT
-    WAIT_FOR_SECONDS 2
-    INSTALL_POWERLINEFONTS
-    WAIT_FOR_SECONDS 2
-    INSTALL_MPV
-    WAIT_FOR_SECONDS 2
-    INSTALL_VLC
-    WAIT_FOR_SECONDS 2
-    INSTALL_UCARESYSTEMCORE
-    WAIT_FOR_SECONDS 2
-    INSTALL_4KVIDEODOWNLOADER
-    WAIT_FOR_SECONDS 2
-    INSTALL_GOOGLECHROME
-    WAIT_FOR_SECONDS 10
-    INSTALL_NORDVPN
-    WAIT_FOR_SECONDS 2
-    INSTALL_VIVALDIBROWSER
-    WAIT_FOR_SECONDS 2
-    INSTALL_EDGEBROWSER
-    WAIT_FOR_SECONDS 2
-    #INSTALL_VSCODE
-    INSTALL_BPYTOP
-    WAIT_FOR_SECONDS 2
-    INSTALL_VSCODIUM
-    WAIT_FOR_SECONDS 2
-    #INSTALL_ATOM
-    INSTALL_TMUX
-    WAIT_FOR_SECONDS 2
-    INSTALL_SUBLIMETEXT
-    WAIT_FOR_SECONDS 2
-    INSTALL_ULAUNCHER
-    WAIT_FOR_SECONDS 2
-    INSTALL_AUDIORECORDER
-    WAIT_FOR_SECONDS 2
-    INSTALL_CALIBRE
-    WAIT_FOR_SECONDS 2
-    INSTALL_4KVIDEODOWNLOADER
-    WAIT_FOR_SECONDS 2
-    INSTALL_MICROSOFT_FONTS
-    WAIT_FOR_SECONDS 2
-    INSTALL_ADB_AND_FASTBOOT
-    WAIT_FOR_SECONDS 2
-    INSTALL_PFETCH
-    WAIT_FOR_SECONDS 2
-    #INSTALL_VARIETY
-    WAIT_FOR_SECONDS 2
-    INSTALL_GNOME_SOFTWARE
-    WAIT_FOR_SECONDS 2
-    echobanner "Installing apt software done in real machines"
-    ## End of script
-}
-function INSTALL_ALL_APT_SOFTWARE_VM() {
-    echobanner "Installing apt software for VMs"
-    INSTALL_BASIC_UTILITIES
-    WAIT_FOR_SECONDS 2
-    INSTALL_VBOX_GUESTADDITIONS
-    WAIT_FOR_SECONDS 2
-    INSTALL_NEOVIM
-    WAIT_FOR_SECONDS 2
-    INSTALL_CORRETTO_JDK11
-    WAIT_FOR_SECONDS 2
-    INSTALL_GIT
-    WAIT_FOR_SECONDS 2
-    INSTALL_REDSHIFT
-    WAIT_FOR_SECONDS 2
-    INSTALL_POWERLINEFONTS
-    WAIT_FOR_SECONDS 2
-    INSTALL_VLC
-    WAIT_FOR_SECONDS 2
-    INSTALL_UCARESYSTEMCORE
-    WAIT_FOR_SECONDS 2
-    INSTALL_GOOGLECHROME
-    WAIT_FOR_SECONDS 2
-    INSTALL_NORDVPN
-    WAIT_FOR_SECONDS 2
-    #INSTALL_BRAVEBROWSER
-    INSTALL_SUBLIMETEXT
-    WAIT_FOR_SECONDS 2
-    INSTALL_MICROSOFT_FONTS
-    WAIT_FOR_SECONDS 2
-    INSTALL_PFETCH
-    WAIT_FOR_SECONDS 2
-    echobanner "Installing apt software done in Virtual machines"
-    ## End of script
-}
-function INSTALL_ALL_FLATPAK_SOFTWARE() {
-    echobanner "Installing flatpak software"
-    INSTALL_TELEGRAM
-    INSTALL_SIGNAL
-    INSTALL_TORBROWSER
-    INSTALL_CELLULOID
-    INSTALL_BITWARDEN
-    INSTALL_KEEPASSXC
-    INSTALL_FOLIATE
-    INSTALL_OKULAR
-    INSTALL_BOOKWORM
-    INSTALL_CHROMIUM
-    INSTALL_KLAVARO
-    INSTALL_LIBREWOLF
-    echobanner "Installing flatpak software done"
-    ## End of script
-}
-function FIRST_RUN_COMMON() {
-    echobanner "Installing first run software"
-    CLEAN_UPDATE && FIRST_UPGRADE && ENABLE_FLATPAKS
-    echobanner "Installing first run software done"
-    ## End of script
-}
-function SECOND_RUN() {
-    echobanner "Installing Second run software"
-    if [ "$MACHINE_VIRTUAL_OR_REAL" != "$IS_VIRTUALBOX_MACHINE" ]; then
-        echo "This is an actual machine set-up"
-        WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE && INSTALL_ALL_FLATPAK_SOFTWARE && COPY_BASHRC_AND_DELETE_REST && CREATE_FOLDER_SYSTEM
-    else
-        echo "This is a virtualbox machine so installing only relevant software"
-        WELCOME_SCREEN && FIRST_UPDATE && INSTALL_ALL_APT_SOFTWARE_VM && COPY_BASHRC_AND_DELETE_REST
-
-    fi
-
-    echobanner "Installing Second run software done"
-    ## End of script
-}
-function INSTALL_BRAVE_OPERA_BROWSERS() {
-    echobanner "Installing Brave and Opera Browsers Separately"
-    INSTALL_BRAVEBROWSER
-    WAIT_FOR_SECONDS 10
-    INSTALL_OPERABROWSER
-    echobanner "Installing Brave and Opera Browsers done"
-    ## End of script
-}
