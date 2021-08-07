@@ -3,11 +3,11 @@ set -e
 #
 #
 # Checking if the user is root or nah!
-function check_root () {
-  if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root" 
-    exit 1
-  fi
+function check_root() {
+    if [[ $EUID -ne 0 ]]; then
+        echo "This script must be run as root"
+        exit 1
+    fi
 }
 #Check complete
 
@@ -73,29 +73,20 @@ function WELCOME_SCREEN() {
     echo
     echo " Selective Installer will start immediately now        "
 
-   # WAIT_FOR_SECONDS 6
+    # WAIT_FOR_SECONDS 6
 }
 function echobanner() {
-    echo $1 >>textfile.txt
-    fold -w 40 -s textfile.txt >folded_textfile.txt
-    (perl -lne 'printf "%-40s\n", $_' folded_textfile.txt) >textconform.txt
-    textconform=$(cat textconform.txt)
-
-    echo "+------------------------------------------+"
-    echo "|          Start                           |"
-    echo "+------------------------------------------+"
-    printf "$(tput bold)%-40s$(tput sgr0)\n" "$textconform"
-    echo "+------------------------------------------+"
-    echo "|          End                             |"
-    echo "+------------------------------------------+"
-
-    rm -f textfile.txt folded_textfile.txt textconform.txt
-
+    echo "+-----------------------------------------------------------------------------------------------------------+"
+    echo " $1 "
+    echo "+-----------------------------------------------------------------------------------------------------------+"
+}
+function SHUT_UNATTENDED_UPGRADES() {
+    sudo apt remove unattended-upgrades -y
+    sudo systemctl disable apt-daily-upgrade.timer
+    sudo systemctl disable apt-daily.timer
 }
 function FIRST_UPGRADE() {
     echobanner "The first upgrade taking place here"
-    sudo systemctl disable apt-daily-upgrade.timer
-    sudo systemctl disable apt-daily.timer
     sudo add-apt-repository universe -y
     sudo add-apt-repository multiverse -y
     sudo add-apt-repository restricted -y
@@ -108,12 +99,6 @@ function FIRST_UPDATE() {
     sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt autoclean -y
     echobanner "The first update is now complete: and now going for software installs"
 
-}
-function KILL_PACKAGEKITD_PROCESS() {
-    ps aux  |  grep  "/usr/libexec/packagekitd"  |  awk '{print $2}'  |  xargs sudo kill -9 || true
-}
-function SHUT_UNATTENDED_UPGRADES() {
-    sudo apt remove unattended-upgrades -y
 }
 function CLEAN_UPDATE() {
     echobanner "The clean update taking place here"
@@ -135,46 +120,9 @@ function INSTALL_BASIC_UTILITIES() {
 function INSTALL_PAPIRUS_ICON_THEME() {
     echobanner "Installing Papirus icon theme"
     sudo add-apt-repository -y ppa:papirus/papirus
-	sudo apt install -y papirus-icon-theme
-	gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
+    sudo apt install -y papirus-icon-theme
+    gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
     echobanner "Installing Papirus icon theme done"
-}
-function INSTALL_GOGH_THEMES() {
-	echobanner "Installing Gogh tool and themes"
-	# clone the repo into "$PRESENTHOME/src/gogh"
-	mkdir -p "$PRESENTHOME/src"
-	cd "$PRESENTHOME/src"
-	git clone https://github.com/Mayccoll/Gogh.git gogh
-	cd gogh/themes
-	sudo chmod +x *.sh
-	# necessary on ubuntu
-	export TERMINAL=gnome-terminal
-	# install themes
-	./afterglow.sh
-	./alien-blood.sh
-	./argonaut.sh
-	./ayu-dark.sh
-	./ayu-mirage.sh
-	./azu.sh
-	./blazer.sh
-	./broadcast.sh
-	./brogrammer.sh
-	./cai.sh
-	./chalk.sh
-	./chalkboard.sh
-	./dark-pastel.sh
-	./darkside.sh
-	./dehydration.sh
-	./desert.sh
-	./dimmed-monokai.sh
-	./dracula.sh
-	./earthsong.sh
-	./elemental.sh
-	./elementary.sh
-	./sea-shells.sh
-    cd ../../
-    sudo rm -rf Gogh
-	echobanner "Installing Gogh tool and themes done"
 }
 function INSTALL_DRACULA_GNOME_TERMINAL() {
     # Gnome-terminal Dracula theme install
@@ -183,7 +131,6 @@ function INSTALL_DRACULA_GNOME_TERMINAL() {
     cd gnome-terminal/
     ./install.sh
     cd ..
-   
 }
 function INSTALL_DRACULA_GEDIT() {
     wget https://raw.githubusercontent.com/dracula/gedit/master/dracula.xml
@@ -192,10 +139,8 @@ function INSTALL_DRACULA_GEDIT() {
         mkdir "$FILE" && true
     fi
     sudo mv dracula.xml "$FILE"/
-    
 }
 function INSTALL_DRACULA_GTK_THEME() {
-
     wget https://github.com/dracula/gtk/archive/master.zip
     unzip master.zip
     sudo mv -f gtk-master /usr/share/themes && true
@@ -207,7 +152,8 @@ function INSTALL_LATEST_VIRTUALBOX() {
     echobanner "Latest Virtualbox download and full install"
     sudo apt-get remove virtualbox -y || true
     sudo apt-get autoremove -y
-    UBUNTU_CODENAME=$(lsb_release -c|awk '{print $2}')
+    UBUNTU_CODENAME=$(lsb_release -c | awk '{print $2}')
+    sudo rm /etc/apt/sources.list.d/virtualbox.list
     sudo touch /etc/apt/sources.list.d/virtualbox.list
     sudo echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian ${UBUNTU_CODENAME} contrib" | sudo tee --append /etc/apt/sources.list.d/virtualbox.list
     wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
@@ -342,10 +288,10 @@ function INSTALL_GOOGLECHROME() {
 function INSTALL_WATERFOX() {
     sleep 4
     echobanner "Waterfox download and full install"
-    UBUNTU_VERSION=$(cat /etc/os-release|grep VERSION_ID| cut -d'"' -f 2)
+    UBUNTU_VERSION=$(cat /etc/os-release | grep VERSION_ID | cut -d'"' -f 2)
     echo "deb http://download.opensuse.org/repositories/home:/hawkeye116477:/waterfox/xUbuntu_$UBUNTU_VERSION/ /" | sudo tee /etc/apt/sources.list.d/home:hawkeye116477:waterfox.list
     urlreleasekey=https://download.opensuse.org/repositories/home:hawkeye116477:waterfox/xUbuntu_$UBUNTU_VERSION/Release.key
-    curl -fsSL https://download.opensuse.org/repositories/home:hawkeye116477:waterfox/xUbuntu_21.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_hawkeye116477_waterfox.gpg > /dev/null
+    curl -fsSL https://download.opensuse.org/repositories/home:hawkeye116477:waterfox/xUbuntu_21.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_hawkeye116477_waterfox.gpg >/dev/null
     sudo apt update -y
     sudo apt install waterfox-g3-kpe -y
     echobanner "Waterfox completed"
@@ -421,19 +367,6 @@ function INSTALL_CALIBRE() {
     sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
     echobanner "Calibre Ebook manager installer completed"
 }
-function INSTALL_4KVIDEODOWNLOADER() {
-
-    echobanner "4k Video Downloader installer might need version"
-    wget https://dl.4kdownload.com/app/4kvideodownloader_4.13.4-1_amd64.deb
-    if [[ $? -eq 0 ]]; then
-        chmod +x 4k*amd64.deb
-        sudo apt install ./4k*amd64.deb -y
-        sudo rm -f 4k*amd64.deb
-    else
-        echo "4K Video Downloader install failed"
-    fi
-    echobanner "4k Video Downloader installer completed"
-}
 function INSTALL_MICROSOFT_FONTS() {
 
     echobanner "Microsoft Truetype fonts install"
@@ -483,39 +416,39 @@ function ENABLE_FLATPAKS() {
 function INSTALL_OPENSNITCH {
     sleep 4
     echo "Opensnitch download and full install"
-    versionnum=`curl -s https://github.com/evilsocket/opensnitch/releases/ | grep tag_name | sort -r|awk 'FNR == 1'|grep -P -o '(?<=tag_name=v).*?(?=\&)'`;
-    if [[ $versionnum == *-* ]]
-    then
-    target1=`echo $versionnum| cut -d '-' -f1`;
-    target2=`echo $versionnum| cut -d '-' -f2|sed 's/\.//'`;
-    target="$target1"."$target2"
+    versionnum=$(curl -s https://github.com/evilsocket/opensnitch/releases/ | grep tag_name | sort -r | awk 'FNR == 1' | grep -P -o '(?<=tag_name=v).*?(?=\&)')
+    if [[ $versionnum == *-* ]]; then
+        target1=$(echo $versionnum | cut -d '-' -f1)
+        target2=$(echo $versionnum | cut -d '-' -f2 | sed 's/\.//')
+        target="$target1"."$target2"
     else
-            target="$target1"        
+        target="$target1"
     fi
-    echo $versionnum ;echo $target
-    wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/opensnitch_$target-1_amd64.deb;
-    wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/python3-opensnitch-ui_$target-1_all.deb;
+    echo $versionnum
+    echo $target
+    wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/opensnitch_$target-1_amd64.deb
+    wget https://github.com/evilsocket/opensnitch/releases/download/v$versionnum/python3-opensnitch-ui_$target-1_all.deb
     sudo chmod +x *.deb
-    sudo dpkg -i opensnitch*.deb python3-opensnitch-ui*.deb; 
-    sudo apt -f install -y;
+    sudo dpkg -i opensnitch*.deb python3-opensnitch-ui*.deb
+    sudo apt -f install -y
     sudo rm -rf *github.com
-    sudo rm opensnitch*.deb python3-opensnitch-ui*.deb;
+    sudo rm opensnitch*.deb python3-opensnitch-ui*.deb
     sudo apt --fix-broken install
-    echo "Opensnitch completed";
+    echo "Opensnitch completed"
 }
 function INSTALL_BLEACHBIT {
     sleep 4
     echo "Bleachbit download and full install"
-    wget -o ./urls.txt --spider -r  --no-verbose --no-parent https://www.bleachbit.org/download/linux
-    bleachbiturl=$(cat urls.txt | awk '{print $3}'|sed -e 's/URL://'|grep '.deb$'|grep 'ubuntu'| sort -nr|awk 'FNR == 1')
+    wget -o ./urls.txt --spider -r --no-verbose --no-parent https://www.bleachbit.org/download/linux
+    bleachbiturl=$(cat urls.txt | awk '{print $3}' | sed -e 's/URL://' | grep '.deb$' | grep 'ubuntu' | sort -nr | awk 'FNR == 1')
     firefox --browser "$bleachbiturl"
     sleep 30
     rm urls.txt
     rm -rf www.bleachbit.org
     cd /home/devk/Downloads
     sudo apt install -y ./bleachbit*.deb
-    rm bleachbit*.deb    
-    echo "Bleachbit completed";
+    rm bleachbit*.deb
+    echo "Bleachbit completed"
 }
 
 function INSTALL_GNOME_SOFTWARE() {
@@ -529,11 +462,11 @@ function INSTALL_GNOME_SOFTWARE() {
         sudo apt install gnome-software-plugin-flatpak -y
         sudo apt update -y
     fi
-   
+
 }
 function INSTALL_SMPLAYER() {
     echobanner "Installing SMPlayer"
-    sudo add-apt-repository -y ppa:rvm/smplayer 
+    sudo add-apt-repository -y ppa:rvm/smplayer
     sudo apt-get update -y
     sudo apt-get install smplayer smplayer-themes smplayer-skins -y
     echobanner "Installing SMPlayer done"
@@ -655,7 +588,7 @@ function COPY_BASHRC_AND_BASH_ALIASES() {
     sudo cp ".bashrc" /home/"$USERID"/
     sudo cp ".bash_aliases" /home/"$USERID"/
     sudo chown -R "$USERID":"$USERID" /home/"$USERID"
-    
+
 }
 function INSTALL_ALL_APT_SOFTWARE() {
     echobanner "Installing apt software"
@@ -666,8 +599,6 @@ function INSTALL_ALL_APT_SOFTWARE() {
     INSTALL_VIRTUALBOX
     WAIT_FOR_SECONDS 2
     INSTALL_NEOVIM
-    WAIT_FOR_SECONDS 2
-    INSTALL_GIT
     WAIT_FOR_SECONDS 2
     INSTALL_REDSHIFT
     WAIT_FOR_SECONDS 2
