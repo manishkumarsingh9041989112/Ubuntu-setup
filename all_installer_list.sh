@@ -529,7 +529,11 @@ function INSTALL_VIDEO_DOWNLOADER() {
     flatpak --system install flathub com.github.unrud.VideoDownloader -y
     echobanner "Video Downloader flatpak installed"
 }
-
+function INSTALL_CLAPPER() {
+    echobanner "Installing Clapper flatpak"
+    flatpak --system install flathub com.github.rafostar.Clapper -y
+    echobanner "Clapper flatpak installed"
+}
 #******************************End of section contains individual software entries****************************************
 
 function REBOOT_SYSTEM() {
