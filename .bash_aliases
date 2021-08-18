@@ -3,6 +3,7 @@ alias fullaptupgrade='sudo apt update -y && sudo apt upgrade -y && sudo apt dist
 alias shutitdown='sudo shutdown now'
 alias rebootit='sudo reboot now'
 alias aptcleanupgrade='sudo rm -rf /var/usr/apt/lists/* && sudo apt update -o Acquire::CompressionTypes::Order::=gz && sudo apt update -y && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoclean -y && sudo apt autoremove -y'
+alias calibreupgrade='sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin'
 EXPORT_ALL_VM() {
 	vmlist=$(vboxmanage list vms | cut -d'"' -f 2);
 	IFS=$'\n'$'\r';
