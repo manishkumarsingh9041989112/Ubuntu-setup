@@ -15,6 +15,11 @@ IMPORT_ALL_VM() {
 	IFS=$'\n'$'\r';
 	for vm in $ovafilelist;do vboxmanage import "$vm";done;
 }
-
+SNAPSHOT_EVERY_VM() {
+	vmlist=$(vboxmanage list vms | cut -d'"' -f 2);
+	IFS=$'\n'$'\r';
+	for vm in $vmlist;do vboxmanage snapshot "$vm" delete "CleanSnap";done;
+	for vm in $vmlist;do vboxmanage snapshot "$vm" take "CleanSnap";done;
+}
 
 
