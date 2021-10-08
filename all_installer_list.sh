@@ -110,7 +110,7 @@ function CLEAN_UPDATE() {
 }
 function INSTALL_BASIC_UTILITIES() {
     echobanner "Basic utilities installation"
-    sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git -y
+    sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git gconf2 -y
     sudo apt-get install dconf-cli uuid-runtime -y
     sudo apt-get --yes install unace rar p7zip zip cabextract file-roller
     sudo apt install build-essential dkms linux-headers-$(uname -r) -y
