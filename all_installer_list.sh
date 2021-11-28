@@ -361,6 +361,15 @@ function INSTALL_NORDVPN() {
     sudo apt install nordvpn -y
     echobanner "NordVPN download and base install done"
 }
+function INSTALL_MULLVADVPN() {
+
+    echobanner "Mullvad download and base install"
+    wget --content-disposition https://mullvad.net/download/app/deb/latest
+    MULLVADDEB=$(ls Mullvad*.deb)
+    sudo dpkg -i $MULLVADDEB
+    sudo rm -f $MULLVADDEB
+    echobanner "Mullvad download and base install done"
+}
 function INSTALL_VSCODE() {
 
     echobanner "VSCode install"
