@@ -25,7 +25,7 @@ INSTALL_NORDVPN
 INSTALL_MULLVADVPN
 INSTALL_VARIETY
 INSTALL_BITWARDEN #Flatpak
-INSTALL_KEEPASSXC #Flatpak
+INSTALL_KEEPASSXC_PPA
 #******************Browsers********************************#
 INSTALL_GOOGLECHROME
 INSTALL_EDGEBROWSER
@@ -50,7 +50,7 @@ INSTALL_CALIBRE
 #INSTALL_BOOKWORM #Flatpak
 
 #************Media*****************************************#
-INSTALL_MPV
+INSTALL_CELLULOID_PPA
 INSTALL_VLC
 INSTALL_CLAPPER #Flatpak
 INSTALL_4KVIDEODOWNLOADER
@@ -58,9 +58,10 @@ INSTALL_VIDEO_DOWNLOADER
 #INSTALL_CELLULOID #Flatpak
 
 #************Communication*********************************#
-INSTALL_TELEGRAM #Flatpak
-INSTALL_SIGNAL   #Flatpak
-
+#INSTALL_TELEGRAM #Flatpak
+#INSTALL_SIGNAL   #Flatpak
+INSTALL_TELEGRAM_APT 
+INSTALL_SIGNAL_PPA  
 #*******Final steps***************************************#
 COPY_BASHRC_AND_BASH_ALIASES
 INSTALL_FIRETOOLS

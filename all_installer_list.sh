@@ -466,6 +466,36 @@ function INSTALL_VERACRYPT() {
     sudo apt-get install veracrypt -y
     echobanner "Installing VeraCrypt done"
 }
+function INSTALL_KEEPASSXC_PPA() {
+    echobanner "Installing KeepassXC from PPA"
+    sudo add-apt-repository ppa:phoerious/keepassxc -y
+    sudo apt update -y
+    sudo apt install keepassxc -y
+    echobanner "KeepassXC PPA installed"
+}
+
+function INSTALL_CELLULOID_PPA() {
+    echobanner "Installing Celluloid from PPA"
+    sudo add-apt-repository ppa:xuzhen666/gnome-mpv -y
+    sudo apt-get update -y
+    sudo apt install celluloid -y
+    echobanner "Celluloid PPA installed"
+}
+function INSTALL_SIGNAL_PPA() {
+    echobanner "Installing Signal app from PPA"
+    wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+    cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
+    sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+
+    sudo apt update -y && sudo apt install signal-desktop -y
+    echobanner "Signal PPA installed"
+}
+function INSTALL_TELEGRAM_APT() {
+    echobanner "Installing Telegram desktop"
+    sudo apt install telegram-desktop -y
+    echobanner "Telegram installed"
+}
 #----------------------Flatpaks installed are below-------------------------------------------
 
 function INSTALL_TELEGRAM() {
