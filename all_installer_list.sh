@@ -233,6 +233,14 @@ function INSTALL_QBITTORRENT() {
     sudo apt install qbittorrent -y
     echobanner "Qbittorrent install completed"
 }
+function INSTALL_DELUGE() {
+
+    echobanner "Deluge download and full install"
+    sudo add-apt-repository ppa:deluge-team/stable -y
+    sudo apt update -y
+    sudo apt install deluge -y
+    echobanner "Deluge install completed"
+}
 function INSTALL_MPV() {
 
     echobanner "MPV download and full install"
