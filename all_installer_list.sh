@@ -112,7 +112,7 @@ function INSTALL_BASIC_UTILITIES() {
     echobanner "Basic utilities installation"
     sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git gconf2 -y
     sudo apt-get install dconf-cli uuid-runtime -y
-    sudo apt-get --yes install unace rar p7zip zip cabextract file-roller
+    sudo apt-get --yes install unace rar p7zip zip cabextract file-roller ubuntu-restricted-extras
     sudo apt install build-essential dkms linux-headers-$(uname -r) -y
 
 }
@@ -580,6 +580,11 @@ function INSTALL_CLAPPER() {
     echobanner "Installing Clapper flatpak"
     flatpak --system install flathub com.github.rafostar.Clapper -y
     echobanner "Clapper flatpak installed"
+}
+function INSTALL_OTPCLIENT() {
+    echobanner "Installing OTPClient flatpak"
+    flatpak --system install flathub com.github.paolostivanin.OTPClient -y
+    echobanner "OTPClient flatpak installed"
 }
 #******************************End of section contains individual software entries****************************************
 
