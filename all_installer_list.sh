@@ -110,11 +110,8 @@ function CLEAN_UPDATE() {
 }
 function INSTALL_BASIC_UTILITIES() {
     echobanner "Basic utilities installation"
-    sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git gconf2 -y
-    sudo apt-get install dconf-cli uuid-runtime -y
-    sudo apt-get --yes install unace rar p7zip zip cabextract file-roller ubuntu-restricted-extras
-    sudo apt install build-essential dkms linux-headers-$(uname -r) -y
-
+    sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git gconf2 dconf-cli uuid-runtime nace rar p7zip zip cabextract file-roller ubuntu-restricted-extras build-essential dkms linux-headers-$(uname -r) -y
+    
 }
 #******************************The section contains individual software entries****************************************
 function INSTALL_PAPIRUS_ICON_THEME() {
@@ -183,18 +180,25 @@ function INSTALL_PFETCH() {
 }
 function INSTALL_LATEST_VIRTUALBOX() {
     echobanner "Latest Virtualbox download and full install"
-    sudo apt-get remove virtualbox -y || true
-    sudo apt-get autoremove -y
-    UBUNTU_CODENAME=$(lsb_release -c | awk '{print $2}')
-    sudo rm /etc/apt/sources.list.d/virtualbox.list && true
-    sudo touch /etc/apt/sources.list.d/virtualbox.list
-    sudo echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian ${UBUNTU_CODENAME} contrib" | sudo tee --append /etc/apt/sources.list.d/virtualbox.list
-    wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-    sudo apt-get update -y
-    sudo apt-get install virtualbox-6.1 dkms -y
-    vboxversion=$(wget -qO - https://download.virtualbox.org/virtualbox/LATEST.TXT)
-    wget "https://download.virtualbox.org/virtualbox/${vboxversion}/Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack"
-    sudo vboxmanage extpack install --replace --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack
+    if [ -n "$1" ]; then
+        sudo apt-get remove virtualbox -y || true
+        sudo apt-get autoremove -y
+        sudo rm /etc/apt/sources.list.d/virtualbox.list && true
+        vboxversion=$(wget -qO - https://download.virtualbox.org/virtualbox/LATEST.TXT)
+        vboxmajorversion=$(echo $vboxversion|cut -d. -f1)
+        vboxmajorversion+="."
+        vboxmajorversion+=$(echo $vboxversion|cut -d. -f2)
+        sudo touch /etc/apt/sources.list.d/virtualbox.list
+        sudo echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $1 contrib" | sudo tee --append /etc/apt/sources.list.d/virtualbox.list
+        wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+        sudo apt-get update -y
+        sudo apt-get install virtualbox-6.1 dkms -y
+        
+        wget "https://download.virtualbox.org/virtualbox/${vboxversion}/Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack"
+        sudo vboxmanage extpack install --replace --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c Oracle_VM_VirtualBox_Extension_Pack-${vboxversion}.vbox-extpack
+    else
+        echobanner "No Ubuntu/Debian Codename provided for the Virtualbox install"
+    fi    
     echobanner "Latest Virtualbox install completed"
 }
 function INSTALL_CORRETTO_JDK11() {
@@ -208,6 +212,14 @@ function INSTALL_CORRETTO_JDK11() {
     sudo update-alternatives --config java
     sudo update-alternatives --config javac
     echobanner "Amazon JDK install completed"
+}
+function INSTALL_NALA() {
+    sleep 4
+    echobanner "Nala install"
+    echo "deb [arch=amd64,arm64,armhf] http://deb.volian.org/volian/ scar main" | sudo tee /etc/apt/sources.list.d/volian-archive-scar-unstable.list
+    wget -qO - https://deb.volian.org/volian/scar.key | sudo tee /etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg > /dev/null
+    sudo apt update && sudo apt install nala-legacy -y
+    echobanner "Nala install completed"
 }
 function INSTALL_NEOVIM() {
 
@@ -262,19 +274,11 @@ function INSTALL_TMUX() {
 function INSTALL_VSCODIUM() {
 
     echobanner "VSCODIUM(FOSS version of VS Code) download and full install"
-    wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg && echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee --append /etc/apt/sources.list.d/vscodium.list
+    wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+    echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list
     sudo apt update -y
     sudo apt install codium -y
     echobanner "VSCODIUM(FOSS version of VS Code) install completed"
-}
-function INSTALL_ATOM() {
-
-    echobanner "Atom text Editor download and full install"
-    wget -q https://packagecloud.io/AtomEditor/atom/gpgkey -O- | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" -y
-    sudo apt update -y
-    sudo apt install atom -y
-    echobanner "Atom text Editor install completed"
 }
 function INSTALL_ULAUNCHER() {
 
@@ -391,7 +395,7 @@ function INSTALL_VSCODE() {
 function INSTALL_SUBLIMETEXT() {
 
     echobanner "Adding Sublime text"
-    wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+    wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg
     echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
     sudo apt update -y
     sudo apt install sublime-text -y
@@ -506,82 +510,82 @@ function INSTALL_TELEGRAM_APT() {
 }
 #----------------------Flatpaks installed are below-------------------------------------------
 
-function INSTALL_TELEGRAM() {
+function INSTALL_TELEGRAM_FLATPAK() {
     echobanner "Installing Telegram flatpak"
     flatpak --system install flathub org.telegram.desktop -y
     echobanner "Telegram flatpak installed"
 }
-function INSTALL_SIGNAL() {
+function INSTALL_SIGNAL_FLATPAK() {
     echobanner "Installing Signal flatpak"
     flatpak --system install flathub org.signal.Signal -y
     echobanner "Signal flatpak installed"
 }
-function INSTALL_TORBROWSER() {
+function INSTALL_TORBROWSER_FLATPAK() {
     echobanner "Installing Tor-Browser flatpak"
     flatpak --system install flathub com.github.micahflee.torbrowser-launcher -y
     echobanner "Tor-Browser flatpak installed"
 }
-function INSTALL_CELLULOID() {
+function INSTALL_CELLULOID_FLATPAK() {
     echobanner "Installing Celluloid flatpak"
     flatpak --system install flathub io.github.celluloid_player.Celluloid -y
     echobanner "Celluloid flatpak installed"
 }
-function INSTALL_BITWARDEN() {
+function INSTALL_BITWARDEN_FLATPAK() {
     echobanner "Installing bitwarden flatpak"
     flatpak --system install flathub com.bitwarden.desktop -y
     echobanner "bitwarden flatpak installed"
 }
-function INSTALL_KEEPASSXC() {
+function INSTALL_KEEPASSXC_FLATPAK() {
     echobanner "Installing KeepassXC flatpak"
     flatpak --system install flathub org.keepassxc.KeePassXC -y
     echobanner "KeepassXC flatpak installed"
 }
-function INSTALL_FOLIATE() {
+function INSTALL_FOLIATE_FLATPAK() {
     echobanner "Installing Foliate flatpak"
     flatpak --system install flathub com.github.johnfactotum.Foliate -y
     echobanner "Foliate flatpak installed"
 }
-function INSTALL_OKULAR() {
+function INSTALL_OKULAR_FLATPAK() {
     echobanner "Installing Okular flatpak"
     flatpak --system install flathub org.kde.okular -y
     echobanner "Okular flatpak installed"
 }
-function INSTALL_BOOKWORM() {
+function INSTALL_BOOKWORM_FLATPAK() {
     echobanner "Installing Bookworm flatpak"
     flatpak --system install flathub com.github.babluboy.bookworm -y
     echobanner "Bookworm flatpak installed"
 }
-function INSTALL_CHROMIUM() {
+function INSTALL_CHROMIUM_FLATPAK() {
     echobanner "Installing Chromium flatpak"
     flatpak --system install flathub org.chromium.Chromium -y
     echobanner "Chromium flatpak installed"
 }
-function INSTALL_KLAVARO() {
+function INSTALL_KLAVARO_FLATPAK() {
     echobanner "Installing Klavaro flatpak"
     flatpak --system install flathub net.sourceforge.Klavaro -y
     echobanner "Klavaro flatpak installed"
 }
-function INSTALL_LIBREWOLF() {
+function INSTALL_LIBREWOLF_FLATPAK() {
     echobanner "Installing Librewolf flatpak"
     flatpak --system install flathub io.gitlab.librewolf-community -y
     echobanner "Librewolf flatpak installed"
 }
-function INSTALL_MIDORI() {
-    echobanner "Installing Midori flatpak"
-    flatpak --system install flathub org.midori_browser.Midori -y
-    echobanner "Midori flatpak installed"
-}
-function INSTALL_VIDEO_DOWNLOADER() {
+function INSTALL_VIDEO_DOWNLOADER_FLATPAK() {
     echobanner "Installing Video Downloader flatpak"
     flatpak --system install flathub com.github.unrud.VideoDownloader -y
     echobanner "Video Downloader flatpak installed"
 }
-function INSTALL_CLAPPER() {
+function INSTALL_CLAPPER_FLATPAK() {
     echobanner "Installing Clapper flatpak"
     flatpak --system install flathub com.github.rafostar.Clapper -y
     echobanner "Clapper flatpak installed"
 }
-function INSTALL_OTPCLIENT() {
+function INSTALL_VSCODIUM_FLATPAK() {
+    echobanner "Installing VSCodium flatpak"
+    flatpak --system install flathub com.vscodium.codium -y
+    echobanner "VSCodium flatpak installed"
+}
+function INSTALL_OTPCLIENT_FLATPAK() {
     echobanner "Installing OTPClient flatpak"
     flatpak --system install flathub com.github.paolostivanin.OTPClient -y
     echobanner "OTPClient flatpak installed"
