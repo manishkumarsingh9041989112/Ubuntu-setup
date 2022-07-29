@@ -2,7 +2,7 @@
 set -e
 source all_installer_list.sh
 check_root
-SHUT_UNATTENDED_UPGRADES && CLEAN_UPDATE && ENABLE_FLATPAKS
+SHUT_UNATTENDED_UPGRADES && CLEAN_UPDATE && ENABLE_FLATPAKS && INSTALL_NALA
 REBOOT_SYSTEM
 #*****************Basics************************************#
 INSTALL_BASIC_UTILITIES
@@ -14,7 +14,7 @@ INSTALL_POWERLINEFONTS
 INSTALL_MICROSOFT_FONTS
 INSTALL_PFETCH
 #************Tools and Utilities********************************#
-INSTALL_LATEST_VIRTUALBOX #this needs the ?Ubuntu/Debian codename right here #
+INSTALL_LATEST_VIRTUALBOX jammy #this needs the ?Ubuntu/Debian codename right here #
 INSTALL_VERACRYPT
 INSTALL_ADB_AND_FASTBOOT
 #INSTALL_REDSHIFT
@@ -51,11 +51,10 @@ INSTALL_CALIBRE
 #INSTALL_BOOKWORM #Flatpak
 
 #************Media*****************************************#
-INSTALL_CELLULOID_PPA
+#INSTALL_CELLULOID_PPA
 INSTALL_VLC
-INSTALL_CLAPPER_FLATPAK  #Flatpak
+#INSTALL_CLAPPER_FLATPAK  #Flatpak
 INSTALL_4KVIDEODOWNLOADER
-INSTALL_VIDEO_DOWNLOADER
 #INSTALL_CELLULOID #Flatpak
 
 #************Communication*********************************#

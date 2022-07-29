@@ -110,7 +110,7 @@ function CLEAN_UPDATE() {
 }
 function INSTALL_BASIC_UTILITIES() {
     echobanner "Basic utilities installation"
-    sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git gconf2 dconf-cli uuid-runtime nace rar p7zip zip cabextract file-roller ubuntu-restricted-extras build-essential dkms linux-headers-$(uname -r) -y
+    sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git gconf2 dconf-cli uuid-runtime unace rar p7zip zip cabextract file-roller ubuntu-restricted-extras build-essential dkms linux-headers-$(uname -r) -y
     
 }
 #******************************The section contains individual software entries****************************************
@@ -216,9 +216,11 @@ function INSTALL_CORRETTO_JDK11() {
 function INSTALL_NALA() {
     sleep 4
     echobanner "Nala install"
-    echo "deb [arch=amd64,arm64,armhf] http://deb.volian.org/volian/ scar main" | sudo tee /etc/apt/sources.list.d/volian-archive-scar-unstable.list
+    echo "deb [arch=amd64] http://deb.volian.org/volian/ scar main" | sudo tee /etc/apt/sources.list.d/volian-archive-scar-unstable.list
     wget -qO - https://deb.volian.org/volian/scar.key | sudo tee /etc/apt/trusted.gpg.d/volian-archive-scar-unstable.gpg > /dev/null
-    sudo apt update && sudo apt install nala-legacy -y
+    sudo apt update 
+    #sudo apt install nala-legacy -y
+    sudo apt install nala -y
     echobanner "Nala install completed"
 }
 function INSTALL_NEOVIM() {
