@@ -621,6 +621,9 @@ function CREATE_FOLDER_SYSTEM() {
     mkdir GitRepos Locker LogBoxer CalibreLibraries
     cd GitRepos
     git clone https://github.com/manishkumarsingh9041989112/Ubuntusetup.git
+    cd Ubuntusetup
+    git config user.email "fun.desk0872@fastmail.com";
+    git config user.name "manishkumarsingh9041989112";
     cd /home/"$USERID"
     cd Downloads
     mkdir Books
