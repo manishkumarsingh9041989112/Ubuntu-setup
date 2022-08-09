@@ -2,7 +2,7 @@
 set -e
 source all_installer_list.sh
 check_root
-SHUT_UNATTENDED_UPGRADES && CLEAN_UPDATE && ENABLE_FLATPAKS && INSTALL_NALA
+SHUT_UNATTENDED_UPGRADES && CLEAN_UPDATE && ENABLE_FLATPAKS && INSTALL_DEBGET
 REBOOT_SYSTEM
 #*****************Basics************************************#
 INSTALL_BASIC_UTILITIES

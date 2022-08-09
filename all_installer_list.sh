@@ -113,6 +113,11 @@ function INSTALL_BASIC_UTILITIES() {
     sudo apt install apt-transport-https curl wget gnupg2 gnupg unrar unzip git gconf2 dconf-cli uuid-runtime unace rar p7zip zip cabextract file-roller ubuntu-restricted-extras build-essential dkms linux-headers-$(uname -r) -y
     
 }
+function INSTALL_DEBGET() {
+    echobanner "Deb-get installation"
+    curl -sL https://raw.githubusercontent.com/wimpysworld/deb-get/main/deb-get | sudo -E bash -s install deb-get
+    
+}
 #******************************The section contains individual software entries****************************************
 function INSTALL_PAPIRUS_ICON_THEME() {
     echobanner "Installing Papirus icon theme"
