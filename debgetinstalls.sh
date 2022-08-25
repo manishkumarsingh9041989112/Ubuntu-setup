@@ -1,3 +1,4 @@
+#just some deb-get installs 
 sudo deb-get install google-chrome-stable   
 sudo deb-get install bitwarden
 sudo deb-get install brave-browser
